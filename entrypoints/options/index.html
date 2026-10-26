@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Captain Note</title>
+    <meta name="manifest.open_in_tab" content="true" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <p class="eyebrow">Extension pour Captain Coaster</p>
+        <h1>Captain Note</h1>
+        <p class="lede">Tes critères, tes poids, tes notes. Tout reste dans ce navigateur ; seule la moyenne arrondie part sur Captain Coaster, quand tu cliques sur « Envoyer ».</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section aria-labelledby="criteria-title">
+        <div class="section-head">
+          <h2 id="criteria-title">Mes critères</h2>
+          <button type="button" class="link" id="reset-criteria">Rétablir les critères par défaut</button>
+        </div>
+        <p class="help">Le poids dit combien un critère compte dans la moyenne. Un critère désactivé ou « Ignoré » disparaît du panneau, mais tes notes passées sont gardées.</p>
+        <ol id="criteria" class="criteria"></ol>
+        <form id="add-criterion" class="add">
+          <label for="new-name" class="sr-only">Nom du nouveau critère</label>
+          <input id="new-name" name="name" maxlength="60" placeholder="Nouveau critère, ex. Première chute" autocomplete="off" required />
+          <button type="submit" class="btn">Ajouter</button>
+        </form>
+      </section>
+
+      <section aria-labelledby="ratings-title">
+        <div class="section-head">
+          <h2 id="ratings-title">Mes notes <span id="ratings-count" class="count"></span></h2>
+          <label class="search">
+            <span class="sr-only">Rechercher un coaster</span>
+            <input id="search" type="search" placeholder="Coaster ou parc…" />
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table class="ratings" aria-labelledby="ratings-title">
+            <thead>
+              <tr>
+                <th scope="col">Coaster</th>
+                <th scope="col" class="num">Moyenne</th>
+                <th scope="col" class="num">Sur Captain Coaster</th>
+                <th scope="col">Modifiée</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="ratings"></tbody>
+          </table>
+        </div>
+        <p id="ratings-none" class="empty" hidden></p>
+        <p id="ratings-empty" class="empty" hidden>Aucune note pour l’instant. Ouvre la page d’un coaster sur Captain Coaster : le panneau « Ta note détaillée » apparaît sous les étoiles.</p>
+      </section>
+
+      <section aria-labelledby="backup-title">
+        <h2 id="backup-title">Sauvegarde</h2>
+        <p class="help">Tes notes ne quittent pas ce navigateur. Exporte-les de temps en temps, ou pour les passer sur un autre ordinateur.</p>
+        <div class="row">
+          <button type="button" class="btn" id="export">Exporter (.json)</button>
+          <input id="import" type="file" accept="application/json,.json" class="sr-only" />
+          <label class="btn btn--ghost" for="import">Importer…</label>
+          <label class="check"><input type="checkbox" id="import-replace" /> Remplacer au lieu de fusionner</label>
+        </div>
+        <p id="backup-status" class="status" role="status"></p>
+      </section>
+    </main>
+
+    <footer class="wrap foot">
+      <p>Captain Note n’est pas affilié à Captain Coaster. Aucune donnée n’est collectée.</p>
+    </footer>
+    <div id="announcer" class="sr-only" role="status"></div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
