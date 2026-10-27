@@ -191,7 +191,7 @@ class Panel {
           <p class="cn__avg"><span class="cn-sr">Ta moyenne : ${scoreText(value)}</span><span class="cn__big" aria-hidden="true">${formatValue(value)}</span><span class="cn__unit" aria-hidden="true">/5</span></p>
           <p class="cn__detail">Moyenne ${formatValue(raw, 2)} sur ${counted} critère${counted > 1 ? 's' : ''}${
             counted < active ? ` (sur ${active})` : ''
-          }, arrondie au demi-point pour Captain Coaster.</p>
+          }, arrondie au demi-point inférieur pour Captain Coaster.</p>
         </div>`);
     }
 

@@ -39,7 +39,7 @@ export const DEFAULT_CRITERIA: Criterion[] = [
 
 /** Snaps any number to a valid Captain Coaster value (0.5 to 5, half steps). */
 export function toCaptainValue(raw: number): number {
-  const snapped = Math.round(raw * 2) / 2;
+  const snapped = Math.floor(raw * 2) / 2;
   return Math.min(MAX_VALUE, Math.max(MIN_VALUE, snapped));
 }
 

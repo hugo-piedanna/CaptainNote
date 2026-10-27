@@ -6,7 +6,7 @@ const crit = (id: string, weight = 1, enabled = true): Criterion => ({ id, name:
 describe('toCaptainValue', () => {
   it('snaps to half points within 0.5 and 5', () => {
     expect(toCaptainValue(3.73)).toBe(3.5);
-    expect(toCaptainValue(3.75)).toBe(4);
+    expect(toCaptainValue(3.75)).toBe(3.5);
     expect(toCaptainValue(3.24)).toBe(3);
     expect(toCaptainValue(0.1)).toBe(0.5);
     expect(toCaptainValue(7)).toBe(5);
