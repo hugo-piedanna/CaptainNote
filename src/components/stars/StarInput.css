@@ -1,0 +1,23 @@
+.cn-stars { display: flex; align-items: center; gap: 8px; }
+.cn-stars__track { display: flex; gap: 2px; cursor: pointer; touch-action: none; padding: 2px; outline: none; }
+.cn-stars__track:focus-visible { outline: 2px solid var(--cn-accent); outline-offset: 1px; }
+.cn-star { width: 24px; height: 24px; display: block; }
+.cn-star__on { stop-color: var(--cn-star); }
+.cn-star__off { stop-color: var(--cn-star-off); }
+.cn-star__shape { stroke: var(--cn-star-stroke); stroke-width: 1; stroke-linejoin: round; }
+.cn-stars__clear { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: none;
+  border-radius: 50%; background: none; color: var(--cn-muted); cursor: pointer; }
+.cn-stars__clear svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.cn-stars__clear:hover { color: var(--cn-ink); background: var(--cn-subtle); }
+.cn-stars__clear:focus-visible { outline: 2px solid var(--cn-accent); outline-offset: 1px; }
+.cn-stars__clear[aria-pressed="true"] { color: var(--cn-surface); background: var(--cn-ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .cn-stars__clear { transition: color .15s, background .15s; }
+}
+@media (forced-colors: active) {
+  .cn-star__on { stop-color: Highlight; }
+  .cn-star__off { stop-color: Canvas; }
+  .cn-star__shape { stroke: CanvasText; }
+  .cn-stars__clear { color: ButtonText; }
+  .cn-stars__clear[aria-pressed="true"] { color: HighlightText; background: Highlight; forced-color-adjust: none; }
+}

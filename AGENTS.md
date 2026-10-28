@@ -11,7 +11,7 @@ The keywords **MUST**, **MUST NOT**, **SHOULD**, and **MAY** indicate requiremen
 - **Captain Note** is a Chrome / Firefox extension ([WXT](https://wxt.dev)) that injects multi-criterion rating on [Captain Coaster](https://captaincoaster.com).
 - **Functional source of truth**: `docs/functional-rules.md` (product behavior, scoring, storage, site integration, functional privacy constraints).
 - **User-facing and legal documentation**: `README.md` (overview, install, usage) and `PRIVACY.md` (published policy). These MUST NOT substitute for the functional gate, but MUST be updated when `FR-*` rules or shipped behavior change in a user-visible or legally relevant way.
-- **Technical reference** (module layout, scripts): Development section of `README.md` and code under `lib/` and `entrypoints/`.
+- **Technical reference** (module layout, scripts): Development section of `README.md` and code under `src/`.
 - Before any change to visible **behavior** or **data**, the agent MUST check coverage in `docs/functional-rules.md` and obtain **explicit user confirmation** before writing production code (unless the request is already a direct implementation instruction).
 
 ## 2) Repository documentation language
@@ -83,13 +83,13 @@ Respect the existing separation:
 
 | Area | File(s) | Constraint |
 | ---- | ------- | ---------- |
-| Pure logic (average, rounding, criteria) | `lib/rating.ts` | **No** browser APIs; unit tests required for any scoring change |
-| DOM / Captain Coaster site integration | `lib/captain.ts` | Only place to adapt when the site changes; comply with `FR-captain-*` |
-| Storage, export, import | `lib/store.ts` | Comply with `FR-storage-*` and `FR-backup-*` |
-| Half-star input | `lib/stars.ts` | Comply with `FR-rating-score-input` |
-| Coaster page injection | `entrypoints/captain.content.ts` | “Ta note détaillée” panel |
-| Settings | `entrypoints/options/` | Criteria, list, backup |
-| Background | `entrypoints/background.ts` | Open settings from toolbar |
+| Pure logic (average, rounding, criteria) | `src/lib/rating.ts` | **No** browser APIs; unit tests required for any scoring change |
+| DOM / Captain Coaster site integration | `src/lib/captain.ts` | Only place to adapt when the site changes; comply with `FR-captain-*` |
+| Storage, export, import | `src/lib/store.ts` | Comply with `FR-storage-*` and `FR-backup-*` |
+| Half-star input | `src/components/stars/StarInput.tsx` | Comply with `FR-rating-score-input` |
+| Coaster page injection | `src/entrypoints/captain.content.tsx` | “Ta note détaillée” panel (`src/components/panel/CoasterPanel.tsx`) |
+| Settings | `src/entrypoints/options/` | Criteria, list, backup |
+| Background | `src/entrypoints/background.ts` | Open settings from toolbar |
 
 Other conventions:
 
@@ -108,10 +108,10 @@ Other conventions:
 
 | Domain | Reference rules | Files / tests |
 | ------ | ----------------- | ------------- |
-| Captain Coaster integration | `FR-captain-integration-dual-path`, `FR-captain-rating-values`, `FR-rating-submit-trigger` | `lib/captain.ts`, `tests/captain.test.ts` |
-| Score computation | `FR-criteria-weights`, `FR-rating-weighted-average`, `FR-rating-score-input` | `lib/rating.ts`, `tests/rating.test.ts` |
+| Captain Coaster integration | `FR-captain-integration-dual-path`, `FR-captain-rating-values`, `FR-rating-submit-trigger` | `src/lib/captain.ts`, `tests/captain.test.ts` |
+| Score computation | `FR-criteria-weights`, `FR-rating-weighted-average`, `FR-rating-score-input` | `src/lib/rating.ts`, `tests/rating.test.ts` |
 | Privacy | `FR-privacy-*`, `FR-storage-local-only` | `wxt.config.ts`, `PRIVACY.md` |
-| Export / import | `FR-backup-export-import`, `FR-backup-merge-replace` | `lib/store.ts` |
+| Export / import | `FR-backup-export-import`, `FR-backup-merge-replace` | `src/lib/store.ts` |
 
 Any change in these domains MUST update the relevant tests and, when behavior or public privacy changes, `README.md` and/or `PRIVACY.md`.
 

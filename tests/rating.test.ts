@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_CRITERIA, computeAverage, newCriterionId, toCaptainValue, type Criterion } from '../lib/rating';
+import { DEFAULT_CRITERIA, computeAverage, newCriterionId, toCaptainValue, type Criterion } from '@/lib/rating';
 
 const crit = (id: string, weight = 1, enabled = true): Criterion => ({ id, name: id, weight, enabled });
 

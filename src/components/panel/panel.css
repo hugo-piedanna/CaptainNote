@@ -1,0 +1,56 @@
+/* Tokens + typography inside the shadow root; card chrome comes from `.cc-panel` on the host. */
+:host {
+  display: block;
+  color-scheme: light dark;
+  --cn-ink: var(--color-ink, #18202b);
+  --cn-muted: var(--color-muted, #64748b);
+  --cn-line: var(--color-line, #d5dde6);
+  --cn-surface: var(--color-surface, #fff);
+  --cn-subtle: var(--color-subtle, #eef2f6);
+  --cn-accent: var(--color-action, #1d4ed8);
+  --cn-on-accent: var(--color-on-action, #fff);
+  --cn-star: var(--color-highlight, #f5b82e);
+  --cn-star-off: var(--color-subtle, #e3e9ef);
+  --cn-star-stroke: var(--cn-muted);
+  --cn-warn: var(--color-warning, #92400e);
+  --cn-warn-bg: var(--color-warning-bg, #fff8e6);
+  --cn-ok: var(--color-success, #15803d);
+  --cn-ok-bg: var(--color-success-bg, #ecfdf3);
+  --cn-danger: var(--color-danger, #dc4c3f);
+  --cn-danger-bg: var(--color-danger-bg, #fdf0ee);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--cn-ink);
+  text-align: left;
+}
+.cn__eyebrow { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--cn-muted); }
+.cn__title { margin: 2px 0 10px; font-family: var(--font-display, inherit); font-size: 22px; font-weight: 600; line-height: 1.1; }
+.cn__list { list-style: none; margin: 0; padding: 0; }
+.cn__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--cn-line); flex-wrap: wrap; }
+.cn__name { font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.cn__weight { font-size: 11px; font-weight: 700; color: var(--cn-muted); background: var(--cn-subtle); padding: 1px 7px; }
+.cn__empty, .cn__hint { color: var(--cn-muted); font-size: 13px; margin: 8px 0 0; }
+.cn__summary { border-top: 1px solid var(--cn-line); padding-top: 12px; margin-top: 2px; }
+.cn__result { display: flex; align-items: center; gap: 14px; }
+.cn__avg { margin: 0; display: flex; align-items: baseline; gap: 2px; }
+.cn__big { font-family: var(--font-display, inherit); font-size: 40px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.cn__unit { color: var(--cn-muted); font-weight: 600; }
+.cn__detail { margin: 0; font-size: 13px; color: var(--cn-muted); }
+.cn__note { margin: 10px 0 0; font-size: 13px; padding: 8px 10px; }
+.cn__note--warn { color: var(--cn-warn); background: var(--cn-warn-bg); }
+.cn__note--ok { color: var(--cn-ok); background: var(--cn-ok-bg); }
+.cn__note--error { color: var(--cn-danger); background: var(--cn-danger-bg); }
+.cn__note--info { color: var(--cn-muted); background: var(--cn-subtle); }
+.cn__send { margin-top: 12px; width: 100%; font: inherit; font-weight: 700; padding: 10px 14px;
+  border: 1px solid var(--cn-accent); background: var(--cn-accent); color: var(--cn-on-accent); cursor: pointer; }
+.cn__send[aria-disabled="true"] { background: transparent; color: var(--cn-muted); border-color: var(--cn-line); cursor: default; }
+.cn__send:focus-visible, .cn__settings:focus-visible { outline: 2px solid var(--cn-accent); outline-offset: 2px; }
+.cn__settings { margin-top: 10px; font: inherit; font-size: 13px; color: var(--cn-accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.cn-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; }
+@media (forced-colors: active) {
+  .cn__send { border-color: ButtonText; }
+  .cn__send[aria-disabled="true"] { color: GrayText; border-color: GrayText; }
+  .cn__note { border: 1px solid CanvasText; }
+}

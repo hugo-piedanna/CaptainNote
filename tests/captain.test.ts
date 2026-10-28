@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { clickOffsetFor, coasterIdFromPath, readPage, sendToCaptain } from '../lib/captain';
+import { clickOffsetFor, coasterIdFromPath, readPage, sendToCaptain } from '@/lib/captain';
 
 // jsdom pretends to be a touch screen; a desktop browser is not.
 delete (window as unknown as Record<string, unknown>).ontouchstart;
