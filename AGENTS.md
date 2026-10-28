@@ -86,8 +86,8 @@ Respect the existing separation:
 | Pure logic (average, rounding, criteria) | `lib/rating.ts` | **No** browser APIs; unit tests required for any scoring change |
 | DOM / Captain Coaster site integration | `lib/captain.ts` | Only place to adapt when the site changes; comply with `FR-captain-*` |
 | Storage, export, import | `lib/store.ts` | Comply with `FR-storage-*` and `FR-backup-*` |
-| Half-star input | `lib/stars.ts` | Comply with `FR-rating-score-input` |
-| Coaster page injection | `entrypoints/captain.content.ts` | “Ta note détaillée” panel |
+| Half-star input | `components/stars/StarInput.tsx` | Comply with `FR-rating-score-input` |
+| Coaster page injection | `entrypoints/captain.content.tsx` | “Ta note détaillée” panel (`components/panel/CoasterPanel.tsx`) |
 | Settings | `entrypoints/options/` | Criteria, list, backup |
 | Background | `entrypoints/background.ts` | Open settings from toolbar |
 

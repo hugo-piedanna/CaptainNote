@@ -82,7 +82,7 @@ The final rating is the average of the rated criteria, weighted by their weight 
 
 ## Development
 
-[WXT](https://wxt.dev) project written in TypeScript, tested with [Vitest](https://vitest.dev).
+[WXT](https://wxt.dev) project written in TypeScript and [React](https://react.dev), tested with [Vitest](https://vitest.dev).
 
 ### Scripts
 
@@ -102,8 +102,9 @@ The final rating is the average of the rated criteria, weighted by their weight 
 | [`lib/rating.ts`](lib/rating.ts)                                   | Default criteria, weighted average, rounding. No browser APIs.                           |
 | [`lib/captain.ts`](lib/captain.ts)                                 | Everything that depends on Captain Coaster's HTML. The only file to fix if the site changes. |
 | [`lib/store.ts`](lib/store.ts)                                     | Local storage, export and import (with validation).                                      |
-| [`lib/stars.ts`](lib/stars.ts)                                     | Half-star input component, keyboard accessible.                                          |
-| [`entrypoints/captain.content.ts`](entrypoints/captain.content.ts) | Panel injected into coaster pages.                                                       |
+| [`components/stars/StarInput.tsx`](components/stars/StarInput.tsx) | Half-star input (React), keyboard accessible.                                          |
+| [`components/panel/CoasterPanel.tsx`](components/panel/CoasterPanel.tsx) | “Ta note détaillée” panel UI.                                                        |
+| [`entrypoints/captain.content.tsx`](entrypoints/captain.content.tsx) | Mounts the panel on coaster pages (shadow root).                                     |
 | [`entrypoints/options/`](entrypoints/options/)                     | Settings page: criteria, list of ratings, backup.                                        |
 | [`entrypoints/background.ts`](entrypoints/background.ts)           | Opens the settings from the toolbar button.                                              |
 

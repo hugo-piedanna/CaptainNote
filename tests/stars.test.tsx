@@ -1,16 +1,26 @@
 // @vitest-environment jsdom
+import { act, render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import type { Score } from '../lib/rating';
-import { createStarInput, scoreText } from '../lib/stars';
+import { scoreText } from '../lib/scoreText';
+import { StarInput } from '../components/stars/StarInput';
 
 function mount(value: Score = null) {
   const changes: Score[] = [];
-  const wrap = createStarInput({ label: 'Airtimes', value, onChange: (v) => changes.push(v) });
-  document.body.replaceChildren(wrap);
-  const slider = wrap.querySelector<HTMLElement>('[role="slider"]')!;
-  const clear = wrap.querySelector<HTMLButtonElement>('button')!;
-  const press = (key: string) => slider.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
-  return { slider, clear, press, changes };
+  const view = render(
+    <StarInput label="Airtimes" value={value} onChange={(v) => changes.push(v)} />,
+  );
+  const slider = view.container.querySelector<HTMLElement>('[role="slider"]')!;
+  const clear = view.container.querySelector<HTMLButtonElement>('button')!;
+  const press = (key: string) => {
+    act(() => {
+      slider.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+    });
+  };
+  const clickClear = () => {
+    act(() => clear.click());
+  };
+  return { slider, clear, press, clickClear, changes, rerender: view.rerender };
 }
 
 describe('scoreText', () => {
@@ -22,7 +32,7 @@ describe('scoreText', () => {
   });
 });
 
-describe('createStarInput', () => {
+describe('StarInput', () => {
   it('is a focusable slider whose value stays within its range', () => {
     const { slider, clear } = mount(null);
     expect(slider.tabIndex).toBe(0);
@@ -76,18 +86,18 @@ describe('createStarInput', () => {
   });
 
   it('toggles "does not apply" and brings the previous score back', () => {
-    const { slider, clear, changes } = mount(4);
+    const { slider, clear, changes, clickClear } = mount(4);
     expect(clear.getAttribute('aria-pressed')).toBe('false');
-    clear.click();
+    clickClear();
     expect(clear.getAttribute('aria-pressed')).toBe('true');
-    clear.click();
+    clickClear();
     expect(changes).toEqual([null, 4]);
     expect(slider.getAttribute('aria-valuenow')).toBe('4');
   });
 
   it('sends the focus to the stars when there is no score to bring back', () => {
-    const { slider, clear, changes } = mount(null);
-    clear.click();
+    const { slider, clear, changes, clickClear } = mount(null);
+    clickClear();
     expect(changes).toEqual([]);
     expect(document.activeElement).toBe(slider);
   });
