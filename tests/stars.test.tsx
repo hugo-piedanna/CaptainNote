@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { act, render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import type { Score } from '../lib/rating';
-import { scoreText } from '../lib/scoreText';
-import { StarInput } from '../components/stars/StarInput';
+import type { Score } from '@/lib/rating';
+import { scoreText } from '@/lib/scoreText';
+import { StarInput } from '@/components/stars/StarInput';
 
 function mount(value: Score = null) {
   const changes: Score[] = [];

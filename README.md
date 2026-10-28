@@ -97,16 +97,18 @@ The final rating is the average of the rated criteria, weighted by their weight 
 
 ### Project structure
 
+Application source lives under [`src/`](src/) (`srcDir` in WXT). Tests stay in [`tests/`](tests/) at the repository root.
+
 | File                                                               | Purpose                                                                                  |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| [`lib/rating.ts`](lib/rating.ts)                                   | Default criteria, weighted average, rounding. No browser APIs.                           |
-| [`lib/captain.ts`](lib/captain.ts)                                 | Everything that depends on Captain Coaster's HTML. The only file to fix if the site changes. |
-| [`lib/store.ts`](lib/store.ts)                                     | Local storage, export and import (with validation).                                      |
-| [`components/stars/StarInput.tsx`](components/stars/StarInput.tsx) | Half-star input (React), keyboard accessible.                                          |
-| [`components/panel/CoasterPanel.tsx`](components/panel/CoasterPanel.tsx) | “Ta note détaillée” panel UI.                                                        |
-| [`entrypoints/captain.content.tsx`](entrypoints/captain.content.tsx) | Mounts the panel on coaster pages (shadow root).                                     |
-| [`entrypoints/options/`](entrypoints/options/)                     | Settings page: criteria, list of ratings, backup.                                        |
-| [`entrypoints/background.ts`](entrypoints/background.ts)           | Opens the settings from the toolbar button.                                              |
+| [`src/lib/rating.ts`](src/lib/rating.ts)                                   | Default criteria, weighted average, rounding. No browser APIs.                           |
+| [`src/lib/captain.ts`](src/lib/captain.ts)                                 | Everything that depends on Captain Coaster's HTML. The only file to fix if the site changes. |
+| [`src/lib/store.ts`](src/lib/store.ts)                                     | Local storage, export and import (with validation).                                      |
+| [`src/components/stars/StarInput.tsx`](src/components/stars/StarInput.tsx) | Half-star input (React), keyboard accessible.                                          |
+| [`src/components/panel/CoasterPanel.tsx`](src/components/panel/CoasterPanel.tsx) | “Ta note détaillée” panel UI.                                                        |
+| [`src/entrypoints/captain.content.tsx`](src/entrypoints/captain.content.tsx) | Mounts the panel on coaster pages (shadow root).                                     |
+| [`src/entrypoints/options/`](src/entrypoints/options/)                     | Settings page: criteria, list of ratings, backup.                                        |
+| [`src/entrypoints/background.ts`](src/entrypoints/background.ts)           | Opens the settings from the toolbar button.                                              |
 
 ### Captain Coaster integration
 

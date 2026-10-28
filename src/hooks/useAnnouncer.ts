@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react';
 
-/** Screen reader announcement via a persistent live region. */
 export function useAnnouncer() {
   const regionRef = useRef<HTMLDivElement>(null);
+  const alertRef = useRef<HTMLDivElement>(null);
 
-  const announce = useCallback((text: string) => {
-    const region = regionRef.current;
+  const announce = useCallback((text: string, urgent = false) => {
+    const region = urgent ? alertRef.current : regionRef.current;
     if (!region) return;
     region.textContent = '';
     requestAnimationFrame(() => {
@@ -13,5 +13,5 @@ export function useAnnouncer() {
     });
   }, []);
 
-  return { regionRef, announce };
+  return { regionRef, alertRef, announce };
 }

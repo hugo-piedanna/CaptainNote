@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "[typescript]": {
+      "editor.formatOnSave": true
+    },
+    "prettier.requireConfig": true,
+    "makefile.configureOnOpen": false
+  }
+  
