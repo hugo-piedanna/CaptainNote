@@ -22,13 +22,14 @@ Captain Note adds a detailed rating panel to every coaster page on Captain Coast
 
 ## Features
 
-- "Ta note détaillée" (detailed rating) panel below the stars on every coaster page
-- Customizable criteria: name, on/off and weight (Ignoré, Normal, Important, Essentiel)
+- Detailed rating panel below the stars on every coaster page
+- Customizable criteria: name, on/off and weight (Ignored, Normal, Important, Essential)
 - Half-star input, keyboard accessible; a criterion can be left empty when it does not apply
 - One-click submission of the final rating to Captain Coaster
 - List of all detailed ratings on the settings page
 - JSON export and import (merge or replace)
 - Fully local, no server
+- Available in English, French, Spanish and German, following the Captain Coaster language
 
 ## Installation
 
@@ -57,26 +58,35 @@ npm install
 ## Usage
 
 1. Log in to [captaincoaster.com](https://captaincoaster.com) and open a coaster page.
-2. Rate each criterion in the "Ta note détaillée" panel.
-3. Click "Envoyer" (send) to save the final rating on Captain Coaster.
+2. Rate each criterion in the "Your detailed rating" panel.
+3. Click "Send" to save the final rating on Captain Coaster.
 
 Criteria, weights and the list of ratings are managed from the settings page, opened with the extension's toolbar button.
 
-> The extension interface is currently in French only.
+### Languages
+
+The interface is available in every language offered by Captain Coaster: English, French, Spanish and German.
+
+- The panel follows the language of the Captain Coaster page (`/en/`, `/fr/`, `/es/`, `/de/`).
+- The settings page uses the last Captain Coaster language seen, or the browser language before any coaster page has been opened.
+- The extension name and description in the browser follow the browser language.
+- Other languages fall back to English.
+
+Default criteria are shown in the current language until they are edited; saved or renamed criteria are never translated automatically.
 
 ### Default criteria
 
-Intensité (intensity), Airtimes, Layout et rythme (layout and pacing), Confort et fluidité (comfort and smoothness), Thématisation (theming), Envie de le refaire (rerideability), and Débit et attente (capacity and wait time, disabled by default).
+Intensity, Airtime, Layout and pacing, Comfort and smoothness, Theming, Rerideability, and Capacity and wait time (disabled by default).
 
 ### How the rating is computed
 
-The final rating is the average of the rated criteria, weighted by their weight (Normal ×1, Important ×2, Essentiel ×3, Ignoré excluded), rounded down to the nearest half point and clamped between 0.5 and 5.
+The final rating is the average of the rated criteria, weighted by their weight (Normal ×1, Important ×2, Essential ×3, Ignored excluded), rounded down to the nearest half point and clamped between 0.5 and 5.
 
-| Criterion           | Score | Weight         |
-| ------------------- | ----- | -------------- |
-| Intensité           | 5     | Essentiel (×3) |
-| Airtimes            | 4.5   | Important (×2) |
-| Confort et fluidité | 3     | Normal (×1)    |
+| Criterion              | Score | Weight         |
+| ---------------------- | ----- | -------------- |
+| Intensity              | 5     | Essential (×3) |
+| Airtime                | 4.5   | Important (×2) |
+| Comfort and smoothness | 3     | Normal (×1)    |
 
 (5×3 + 4.5×2 + 3×1) / 6 = **4.5**
 
@@ -104,8 +114,10 @@ Application source lives under [`src/`](src/) (`srcDir` in WXT). Tests stay in [
 | [`src/lib/rating.ts`](src/lib/rating.ts)                                   | Default criteria, weighted average, rounding. No browser APIs.                           |
 | [`src/lib/captain.ts`](src/lib/captain.ts)                                 | Everything that depends on Captain Coaster's HTML. The only file to fix if the site changes. |
 | [`src/lib/store.ts`](src/lib/store.ts)                                     | Local storage, export and import (with validation).                                      |
+| [`src/lib/i18n.ts`](src/lib/i18n.ts), [`src/lib/locales/`](src/lib/locales/) | Display language and translations (en, fr, es, de).                              |
+| [`public/_locales/`](public/_locales/)                                     | Translated extension name and description (browser language).                            |
 | [`src/components/stars/StarInput.tsx`](src/components/stars/StarInput.tsx) | Half-star input (React), keyboard accessible.                                          |
-| [`src/components/panel/CoasterPanel.tsx`](src/components/panel/CoasterPanel.tsx) | “Ta note détaillée” panel UI.                                                        |
+| [`src/components/panel/CoasterPanel.tsx`](src/components/panel/CoasterPanel.tsx) | Detailed rating panel UI.                                                            |
 | [`src/entrypoints/captain.content.tsx`](src/entrypoints/captain.content.tsx) | Mounts the panel on coaster pages (shadow root).                                     |
 | [`src/entrypoints/options/`](src/entrypoints/options/)                     | Settings page: criteria, list of ratings, backup.                                        |
 | [`src/entrypoints/background.ts`](src/entrypoints/background.ts)           | Opens the settings from the toolbar button.                                              |
@@ -121,7 +133,7 @@ The site accepts values from 0.5 to 5 in steps of 0.5.
 
 ## Privacy
 
-Data stays in the browser: no server, no analytics, no data collection. Only the final rating is sent to the Captain Coaster account, when "Envoyer" is clicked. See [PRIVACY.md](PRIVACY.md).
+Data stays in the browser: no server, no analytics, no data collection. Only the final rating is sent to the Captain Coaster account, when "Send" is clicked. See [PRIVACY.md](PRIVACY.md).
 
 ---
 

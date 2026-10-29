@@ -1,4 +1,5 @@
 import { useOptionsPage } from '@/hooks/useOptionsPage';
+import { t } from '@/lib/i18n';
 import { BackupSection } from '@/entrypoints/options/sections/BackupSection';
 import { CriteriaSection } from '@/entrypoints/options/sections/CriteriaSection';
 import { RatingsSection } from '@/entrypoints/options/sections/RatingsSection';
@@ -10,12 +11,9 @@ export function App() {
     <>
       <header className="top">
         <div className="wrap">
-          <p className="eyebrow">Extension pour Captain Coaster</p>
+          <p className="eyebrow">{t.optEyebrow}</p>
           <h1>Captain Note</h1>
-          <p className="lede">
-            Tes critères, tes poids, tes notes. Tout reste dans ce navigateur ; seule la moyenne arrondie part sur
-            Captain Coaster, quand tu cliques sur « Envoyer ».
-          </p>
+          <p className="lede">{t.optLede}</p>
         </div>
       </header>
 
@@ -54,7 +52,7 @@ export function App() {
       </main>
 
       <footer className="wrap foot">
-        <p>Captain Note n’est pas affilié à Captain Coaster. Aucune donnée n’est collectée.</p>
+        <p>{t.optFooter}</p>
       </footer>
       <div ref={page.regionRef} className="sr-only" role="status" />
     </>

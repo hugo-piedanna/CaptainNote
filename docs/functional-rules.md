@@ -14,6 +14,8 @@ On every Captain Coaster coaster page (logged-in user), the extension MUST show 
 
 ## FR-ui-locale-fr
 
+*Superseded by `FR-ui-locale-multi`.*
+
 All user-visible extension strings (panel, options, user-facing error messages) MUST be in French, unless a new rule explicitly documents another language or i18n.
 
 ## FR-ui-settings-entry
@@ -22,7 +24,7 @@ The settings page MUST open from the extension toolbar button. It MUST allow man
 
 ## FR-criteria-defaults
 
-Default criteria MUST be, in this order: Intensité, Airtimes, Layout et rythme, Confort et fluidité, Thématisation, Envie de le refaire (all enabled, Normal weight), then Débit et attente (user-configurable but **disabled** by default, Normal weight).
+Default criteria MUST be, in this order (French names; translated per `FR-ui-locale-multi`): Intensité, Airtimes, Layout et rythme, Confort et fluidité, Thématisation, Envie de le refaire (all enabled, Normal weight), then Débit et attente (user-configurable but **disabled** by default, Normal weight).
 
 ## FR-criteria-customization
 
@@ -83,3 +85,17 @@ The only data leaving the browser to an external service MUST be the final ratin
 ## FR-privacy-permissions
 
 Extension permissions MUST remain limited to `storage` and access to `https://captaincoaster.com/*` to show the panel and submit the rating. Any additional permission or `host_permission` MUST have a new rule, an update to `PRIVACY.md`, and user confirmation.
+
+## FR-ui-locale-multi
+
+Supersedes `FR-ui-locale-fr`. User-visible extension strings (panel, options page, user-facing error messages, manifest name/description/toolbar title) MUST be available in every language offered by Captain Coaster: English (`en`), French (`fr`), Spanish (`es`), German (`de`).
+
+- **Coaster panel**: the display language MUST be the Captain Coaster locale of the current page (first URL segment, e.g. `/de/coasters/…`).
+- **Options page**: the display language MUST be the last Captain Coaster locale seen on a coaster page, stored as `uiLocale` in `storage.local` (`FR-storage-local-only`). Before any coaster page has been visited, it MUST follow the browser UI language.
+- **Manifest strings** (extension name, description, toolbar title) cannot depend on the site: they MUST follow the browser UI language (native `_locales`).
+- Any language other than `en`, `fr`, `es`, `de` MUST fall back to English.
+- Default criterion names (`FR-criteria-defaults`) MUST be shown in the display language as long as the user has not saved criteria. Criteria already saved, including renamed ones, MUST NOT be renamed or translated automatically. “Restore defaults” and an import in Replace mode with empty criteria MUST use the display language.
+- Numbers and dates MUST be formatted for the display language.
+- Language detection MUST NOT add any permission or network request (`FR-privacy-*`).
+- The locale used in Captain Coaster URLs for submission (`FR-captain-integration-dual-path`) stays the one read from the current page.
+- Adding a language requires updating this list and providing a complete translation.

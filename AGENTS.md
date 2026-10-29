@@ -21,7 +21,7 @@ All **repository documentation** MUST be written in **English**. This includes, 
 - Markdown and text docs at the repo root and under `docs/` (e.g. `AGENTS.md`, `README.md`, `PRIVACY.md`, `CHANGELOG.md`, `docs/functional-rules.md`).
 - New or updated doc content produced by an agent as part of a change.
 
-This rule does **not** override product UI language: user-visible extension strings follow `FR-ui-locale-fr` in `docs/functional-rules.md` (French for now). Code comments SHOULD be English unless matching an existing local convention in the touched file.
+This rule does **not** override product UI language: user-visible extension strings follow `FR-ui-locale-multi` in `docs/functional-rules.md` (English, French, Spanish, German, matching Captain Coaster). Code comments SHOULD be English unless matching an existing local convention in the touched file.
 
 ## 3) Mandatory execution flow
 

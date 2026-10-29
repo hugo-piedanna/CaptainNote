@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Captain Note**, extension for Chrome and Firefox
-Last updated: October 26, 2026
+Last updated: October 29, 2026
 
 ## Summary
 
@@ -13,12 +13,13 @@ Captain Note does not collect, transmit or sell any personal data. There is no C
 | --------------------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------- |
 | Criteria and their weights                                                  | Browser local storage (`storage.local`)   | Until the extension is uninstalled          |
 | Detailed ratings (per-criterion scores, coaster name and park, dates)       | Browser local storage (`storage.local`)   | Until they are deleted or the extension is uninstalled |
+| Interface language (last Captain Coaster language seen: en, fr, es or de)   | Browser local storage (`storage.local`)   | Until the extension is uninstalled          |
 
 This data never leaves the device, unless the user exports it to a backup file. Uninstalling the extension permanently deletes it.
 
 ## Data sent
 
-Only one thing leaves the browser: when "Envoyer" (send) is clicked, the average rating (a number between 0.5 and 5) is saved to the user's **Captain Coaster account**, exactly as if the user had clicked the site's stars. The submission uses the existing Captain Coaster session; the extension neither reads nor stores any credentials.
+Only one thing leaves the browser: when "Send" ("Envoyer" in French) is clicked, the average rating (a number between 0.5 and 5) is saved to the user's **Captain Coaster account**, exactly as if the user had clicked the site's stars. The submission uses the existing Captain Coaster session; the extension neither reads nor stores any credentials.
 
 Nothing else is sent, to Captain Coaster or anyone else. Data sent to Captain Coaster is then governed by [its own privacy policy](https://captaincoaster.com).
 

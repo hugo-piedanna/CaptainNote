@@ -7,6 +7,7 @@
  * - assets/controllers/rating_controller.js    : how a click becomes a value
  * - src/Controller/RatingCoasterController.php  : POST /{locale}/ratings/coasters/{id}/edit
  */
+import { t } from './i18n';
 import { MAX_VALUE } from './rating';
 
 export const SELECTORS = {
@@ -89,8 +90,8 @@ export type SendResult =
  */
 export async function sendToCaptain(page: CaptainPage, value: number): Promise<SendResult> {
   const widget = page.widget;
-  if (!widget) return { ok: false, reason: 'Connecte-toi à Captain Coaster pour envoyer ta note.' };
-  if (page.readonly) return { ok: false, reason: 'Captain Coaster ne permet pas de noter ce coaster.' };
+  if (!widget) return { ok: false, reason: t.errLogin };
+  if (page.readonly) return { ok: false, reason: t.errNotRateable };
   if (readCurrentValue(widget) === value) return { ok: true, method: 'widget' };
 
   const rect = widget.getBoundingClientRect();
@@ -106,7 +107,7 @@ export async function sendToCaptain(page: CaptainPage, value: number): Promise<S
     );
     const result = await confirmed;
     if (result === 'saved') return { ok: true, method: 'widget' };
-    if (result === 'failed') return { ok: false, reason: 'Captain Coaster a refusé la note. Réessaie plus tard.' };
+    if (result === 'failed') return { ok: false, reason: t.errRefused };
     // 'timeout': their widget did not react, try the direct request.
   }
 
@@ -141,7 +142,7 @@ function waitForCaptainEvent(widget: HTMLElement): Promise<'saved' | 'failed' | 
 async function sendWithRequest(page: CaptainPage, widget: HTMLElement, value: number): Promise<SendResult> {
   const token =
     widget.closest<HTMLElement>('[data-csrf-protection-token-value]')?.dataset.csrfProtectionTokenValue;
-  if (!token) return { ok: false, reason: 'Jeton de sécurité introuvable. Recharge la page.' };
+  if (!token) return { ok: false, reason: t.errToken };
 
   try {
     // Firefox content scripts must use content.fetch to send the request as the page (same cookies and origin).
@@ -157,13 +158,13 @@ async function sendWithRequest(page: CaptainPage, widget: HTMLElement, value: nu
       body: new URLSearchParams({ value: String(value), _token: token }).toString(),
     });
     if (!response.ok) {
-      return { ok: false, reason: `Captain Coaster a répondu ${response.status}. Recharge la page et réessaie.` };
+      return { ok: false, reason: t.errStatus(response.status) };
     }
     widget.dataset.ratingCurrentValueValue = String(value);
     paintStars(widget, value);
     return { ok: true, method: 'request' };
   } catch {
-    return { ok: false, reason: 'Pas de connexion à Captain Coaster.' };
+    return { ok: false, reason: t.errOffline };
   }
 }
 

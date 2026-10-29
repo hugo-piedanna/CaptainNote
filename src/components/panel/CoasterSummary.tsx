@@ -1,3 +1,4 @@
+import { t, withStars } from '@/lib/i18n';
 import { formatValue } from '@/lib/rating';
 import { scoreText } from '@/lib/scoreText';
 import { StarsLabel } from '@/components/panel/StarsLabel';
@@ -22,11 +23,11 @@ export function CoasterSummary({
   return (
     <div className="cn__summary">
       {value === null ? (
-        <p className="cn__hint">Note au moins un critère pour obtenir ta moyenne.</p>
+        <p className="cn__hint">{t.rateOneHint}</p>
       ) : (
         <div className="cn__result">
           <p className="cn__avg">
-            <span className="cn-sr">Ta moyenne : {scoreText(value)}</span>
+            <span className="cn-sr">{t.yourAverage(scoreText(value))}</span>
             <span className="cn__big" aria-hidden="true">
               {formatValue(value)}
             </span>
@@ -35,15 +36,15 @@ export function CoasterSummary({
             </span>
           </p>
           <p className="cn__detail">
-            Moyenne {formatValue(raw ?? 0, 2)} sur {counted} critère{counted > 1 ? 's' : ''}
-            {counted < activeCount ? ` (sur ${activeCount})` : ''}, arrondie au demi-point inférieur pour Captain
-            Coaster.
+            {t.averageDetail(formatValue(raw ?? 0, 2), counted, activeCount)}
           </p>
         </div>
       )}
       {value !== null && captainValue > 0 && captainValue !== value && !busy && (
         <p className="cn__note cn__note--warn">
-          Sur Captain Coaster, ta note est <StarsLabel value={captainValue} />. Envoie la nouvelle pour les aligner.
+          {withStars(t.captainDiffers)[0]}
+          <StarsLabel value={captainValue} />
+          {withStars(t.captainDiffers)[1]}
         </p>
       )}
       {status && <p className={`cn__note cn__status cn__note--${status.tone}`}>{status.text}</p>}

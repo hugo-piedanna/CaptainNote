@@ -1,6 +1,7 @@
 import { storage } from '#imports';
+import { getLocale, t, type Locale } from './i18n';
 import {
-  DEFAULT_CRITERIA,
+  defaultCriteria,
   isValidScore,
   type CoasterRating,
   type Criterion,
@@ -8,9 +9,15 @@ import {
 } from './rating';
 
 /** Everything stays in the browser (storage.local). Nothing is sent anywhere except the final note to Captain Coaster. */
-export const criteriaItem = storage.defineItem<Criterion[]>('local:criteria', {
-  fallback: DEFAULT_CRITERIA,
-});
+/** null until the user saves criteria: defaults are then shown in the display language (FR-ui-locale-multi). */
+export const criteriaItem = storage.defineItem<Criterion[]>('local:criteria');
+
+export async function getCriteria(): Promise<Criterion[]> {
+  return (await criteriaItem.getValue()) ?? defaultCriteria();
+}
+
+/** Last Captain Coaster locale seen on a coaster page, used by the options page. */
+export const uiLocaleItem = storage.defineItem<Locale>('local:uiLocale');
 
 export const ratingsItem = storage.defineItem<Record<string, CoasterRating>>('local:ratings', {
   fallback: {},
@@ -48,20 +55,20 @@ export async function exportBackup(): Promise<Backup> {
     app: 'captain-note',
     version: 1,
     exportedAt: new Date().toISOString(),
-    criteria: await criteriaItem.getValue(),
+    criteria: await getCriteria(),
     ratings: await ratingsItem.getValue(),
   };
 }
 
 /** Validates an untrusted backup file and returns clean data, or throws with a readable message. */
 export function parseBackup(json: unknown): Backup {
-  if (typeof json !== 'object' || json === null) throw new Error('Fichier illisible.');
+  if (typeof json !== 'object' || json === null) throw new Error(t.errUnreadable);
   const data = json as Partial<Backup>;
   if (data.app !== 'captain-note' || data.version !== 1) {
-    throw new Error("Ce fichier n'est pas une sauvegarde Captain Note.");
+    throw new Error(t.errNotBackup);
   }
   if (!Array.isArray(data.criteria) || typeof data.ratings !== 'object' || data.ratings === null) {
-    throw new Error('Sauvegarde incomplète.');
+    throw new Error(t.errIncomplete);
   }
 
   const criteria: Criterion[] = data.criteria
@@ -104,16 +111,16 @@ function safeCaptainUrl(url: unknown, coasterId: number): string {
   } catch {
     // fall through
   }
-  return `https://captaincoaster.com/fr/coasters/${coasterId}`;
+  return `https://captaincoaster.com/${getLocale()}/coasters/${coasterId}`;
 }
 
 export async function importBackup(backup: Backup, mode: 'merge' | 'replace'): Promise<void> {
   if (mode === 'replace') {
-    await criteriaItem.setValue(backup.criteria.length ? backup.criteria : DEFAULT_CRITERIA);
+    await criteriaItem.setValue(backup.criteria.length ? backup.criteria : defaultCriteria());
     await ratingsItem.setValue(backup.ratings);
     return;
   }
-  const criteria = await criteriaItem.getValue();
+  const criteria = await getCriteria();
   for (const c of backup.criteria) if (!criteria.some((x) => x.id === c.id)) criteria.push(c);
   await criteriaItem.setValue(criteria);
 

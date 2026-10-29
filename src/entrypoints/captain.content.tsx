@@ -2,6 +2,8 @@ import ReactDOM from 'react-dom/client';
 import { defineContentScript } from '#imports';
 import { CoasterPanel } from '@/components/panel/CoasterPanel';
 import { readPage, SELECTORS } from '@/lib/captain';
+import { resolveLocale, setLocale } from '@/lib/i18n';
+import { uiLocaleItem } from '@/lib/store';
 
 export default defineContentScript({
   matches: ['https://captaincoaster.com/*/coasters/*'],
@@ -10,6 +12,11 @@ export default defineContentScript({
   async main(ctx) {
     const page = readPage(document, location);
     if (!page) return;
+
+    // The panel speaks the language of the page; the options page reuses it (FR-ui-locale-multi).
+    const locale = resolveLocale(page.locale);
+    setLocale(locale);
+    if ((await uiLocaleItem.getValue()) !== locale) await uiLocaleItem.setValue(locale);
 
     const ratingPanel =
       page.widget?.closest(SELECTORS.panel) ?? document.querySelector(SELECTORS.ratingPanel);

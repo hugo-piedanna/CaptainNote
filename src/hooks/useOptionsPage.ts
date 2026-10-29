@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { t } from '@/lib/i18n';
 import {
-  DEFAULT_CRITERIA,
+  defaultCriteria,
   newCriterionId,
   type CoasterRating,
   type Criterion,
@@ -10,6 +11,7 @@ import {
   criteriaItem,
   deleteRating,
   exportBackup,
+  getCriteria,
   importBackup,
   parseBackup,
   ratingsItem,
@@ -42,11 +44,11 @@ export function useOptionsPage() {
 
   useEffect(() => {
     void (async () => {
-      setCriteria(await criteriaItem.getValue());
+      setCriteria(await getCriteria());
       setRatings(await ratingsItem.getValue());
     })();
     const unwatchCriteria = criteriaItem.watch((next) => {
-      setCriteria(next ?? DEFAULT_CRITERIA);
+      setCriteria(next ?? defaultCriteria());
     });
     const unwatchRatings = ratingsItem.watch((next) => {
       setRatings(next ?? {});
@@ -87,9 +89,7 @@ export function useOptionsPage() {
       const count = Object.values(ratings).filter(
         (r) => !q || `${r.name} ${r.park}`.toLowerCase().includes(q),
       ).length;
-      announce(
-        count ? `${count} coaster${count > 1 ? 's' : ''} affiché${count > 1 ? 's' : ''}.` : 'Aucun coaster ne correspond.',
-      );
+      announce(count ? t.shownCount(count) : t.noMatchShort);
     }, 600);
   };
 
@@ -99,12 +99,8 @@ export function useOptionsPage() {
   };
 
   const resetDefaultCriteria = () => {
-    if (
-      confirm(
-        'Revenir aux critères par défaut ? Tes critères personnalisés seront retirés (les notes restent stockées).',
-      )
-    ) {
-      void saveCriteria(structuredClone(DEFAULT_CRITERIA)).then(() => announce('Critères par défaut rétablis.'));
+    if (confirm(t.confirmReset)) {
+      void saveCriteria(defaultCriteria()).then(() => announce(t.resetDone));
     }
   };
 
@@ -115,7 +111,7 @@ export function useOptionsPage() {
     void saveCriteria([
       ...criteria,
       { id: newCriterionId(name, criteria), name, weight: 1, enabled: true },
-    ]).then(() => announce(`Critère ${name} ajouté en position ${criteria.length + 1}.`));
+    ]).then(() => announce(t.criterionAdded(name, criteria.length + 1)));
     setNewName('');
     newNameRef.current?.focus();
   };
@@ -128,17 +124,17 @@ export function useOptionsPage() {
     link.download = `captain-note-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
     URL.revokeObjectURL(link.href);
-    backupStatusMsg(`${Object.keys(backup.ratings).length} notes exportées.`);
+    backupStatusMsg(t.exported(Object.keys(backup.ratings).length));
   };
 
   const importJson = async (file: File) => {
     try {
       const backup = parseBackup(JSON.parse(await file.text()));
-      if (importReplace && !confirm('Remplacer toutes tes notes et tes critères par ceux du fichier ?')) return;
+      if (importReplace && !confirm(t.confirmReplace)) return;
       await importBackup(backup, importReplace ? 'replace' : 'merge');
-      backupStatusMsg(`${Object.keys(backup.ratings).length} notes importées.`);
+      backupStatusMsg(t.imported(Object.keys(backup.ratings).length));
     } catch (error) {
-      backupStatusMsg(error instanceof SyntaxError ? 'Fichier JSON invalide.' : (error as Error).message);
+      backupStatusMsg(error instanceof SyntaxError ? t.errInvalidJson : (error as Error).message);
     }
   };
 

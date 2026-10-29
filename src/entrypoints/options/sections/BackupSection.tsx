@@ -1,3 +1,5 @@
+import { t } from '@/lib/i18n';
+
 export function BackupSection({
   importReplace,
   setImportReplace,
@@ -13,21 +15,18 @@ export function BackupSection({
 }) {
   return (
     <section aria-labelledby="backup-title">
-      <h2 id="backup-title">Sauvegarde</h2>
-      <p className="help">
-        Tes notes ne quittent pas ce navigateur. Exporte-les de temps en temps, ou pour les passer sur un autre
-        ordinateur.
-      </p>
+      <h2 id="backup-title">{t.optBackupTitle}</h2>
+      <p className="help">{t.optBackupHelp}</p>
       <div className="row">
         <button type="button" className="btn" onClick={() => void exportJson()}>
-          Exporter (.json)
+          {t.optExport}
         </button>
         <label className="btn btn--ghost" htmlFor="import">
-          Importer…
+          {t.optImport}
         </label>
         <label className="check">
-          <input type="checkbox" checked={importReplace} onChange={(e) => setImportReplace(e.target.checked)} /> Remplacer
-          au lieu de fusionner
+          <input type="checkbox" checked={importReplace} onChange={(e) => setImportReplace(e.target.checked)} />{' '}
+          {t.optReplace}
         </label>
       </div>
       <input

@@ -1,4 +1,5 @@
 /** Pure rating logic, no browser APIs: easy to test. */
+import { getLocale, messagesFor, type Locale } from './i18n';
 
 export interface Criterion {
   id: string;
@@ -25,17 +26,14 @@ export interface CoasterRating {
 
 export const MIN_VALUE = 0.5;
 export const MAX_VALUE = 5;
-export const WEIGHT_LABELS = ['Ignoré', 'Normal', 'Important', 'Essentiel'] as const;
+/** Default criteria, in order. Ids stay stable across languages: scores are keyed by id. */
+const DEFAULT_IDS = ['intensite', 'airtimes', 'layout', 'confort', 'theming', 'rejouabilite', 'attente'] as const;
 
-export const DEFAULT_CRITERIA: Criterion[] = [
-  { id: 'intensite', name: 'Intensité', weight: 1, enabled: true },
-  { id: 'airtimes', name: 'Airtimes', weight: 1, enabled: true },
-  { id: 'layout', name: 'Layout et rythme', weight: 1, enabled: true },
-  { id: 'confort', name: 'Confort et fluidité', weight: 1, enabled: true },
-  { id: 'theming', name: 'Thématisation', weight: 1, enabled: true },
-  { id: 'rejouabilite', name: 'Envie de le refaire', weight: 1, enabled: true },
-  { id: 'attente', name: 'Débit et attente', weight: 1, enabled: false },
-];
+/** Default criteria named in `locale` (FR-ui-locale-multi). Only "attente" starts disabled. */
+export function defaultCriteria(locale: Locale = getLocale()): Criterion[] {
+  const names = messagesFor(locale).criteria;
+  return DEFAULT_IDS.map((id) => ({ id, name: names[id], weight: 1, enabled: id !== 'attente' }));
+}
 
 /** Snaps any number to a valid Captain Coaster value (0.5 to 5, half steps). */
 export function toCaptainValue(raw: number): number {
@@ -88,7 +86,7 @@ export function computeAverage(criteria: Criterion[], scores: Record<string, Sco
 
 export function formatValue(value: number | null, digits = 1): string {
   if (value === null) return '–';
-  return value.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: digits });
+  return value.toLocaleString(getLocale(), { minimumFractionDigits: 0, maximumFractionDigits: digits });
 }
 
 export function newCriterionId(name: string, existing: Criterion[]): string {

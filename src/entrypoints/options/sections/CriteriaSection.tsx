@@ -1,4 +1,5 @@
-import { WEIGHT_LABELS, type Criterion } from '@/lib/rating';
+import { t } from '@/lib/i18n';
+import type { Criterion } from '@/lib/rating';
 import { IconButton } from '@/entrypoints/options/components/IconButton';
 
 export function CriteriaSection({
@@ -27,15 +28,12 @@ export function CriteriaSection({
   return (
     <section aria-labelledby="criteria-title">
       <div className="section-head">
-        <h2 id="criteria-title">Mes critères</h2>
+        <h2 id="criteria-title">{t.optCriteriaTitle}</h2>
         <button type="button" className="link" onClick={resetDefaultCriteria}>
-          Rétablir les critères par défaut
+          {t.optResetCriteria}
         </button>
       </div>
-      <p className="help">
-        Le poids dit combien un critère compte dans la moyenne. Un critère désactivé ou « Ignoré » disparaît du panneau,
-        mais tes notes passées sont gardées.
-      </p>
+      <p className="help">{t.optCriteriaHelp}</p>
       <ol
         ref={criteriaListRef}
         className="criteria"
@@ -47,7 +45,7 @@ export function CriteriaSection({
             <input
               type="checkbox"
               checked={criterion.enabled}
-              aria-label={`Activer ${criterion.name}`}
+              aria-label={t.enableCriterion(criterion.name)}
               data-focus-key={`${criterion.id}:toggle`}
               onChange={(e) =>
                 void saveCriteria(
@@ -60,7 +58,7 @@ export function CriteriaSection({
               className="criterion__name"
               defaultValue={criterion.name}
               maxLength={60}
-              aria-label={`Nom du critère ${index + 1}`}
+              aria-label={t.criterionName(index + 1)}
               data-focus-key={`${criterion.id}:name`}
               onBlur={(e) => {
                 const value = e.target.value.trim();
@@ -72,7 +70,7 @@ export function CriteriaSection({
               }}
             />
             <select
-              aria-label={`Poids de ${criterion.name}`}
+              aria-label={t.weightOf(criterion.name)}
               data-focus-key={`${criterion.id}:weight`}
               value={String(criterion.weight)}
               onChange={(e) =>
@@ -80,7 +78,7 @@ export function CriteriaSection({
                   criteria.map((c) => (c.id === criterion.id ? { ...c, weight: Number(e.target.value) } : c)),
                 )
               }>
-              {WEIGHT_LABELS.map((label, w) => (
+              {t.weights.map((label, w) => (
                 <option key={w} value={w}>
                   {w === 0 ? label : `${label} ×${w}`}
                 </option>
@@ -89,7 +87,7 @@ export function CriteriaSection({
             <div className="criterion__actions">
               <IconButton
                 text="↑"
-                label={`Monter ${criterion.name}`}
+                label={t.moveUp(criterion.name)}
                 focusKey={`${criterion.id}:up`}
                 disabled={index === 0}
                 onClick={() => {
@@ -97,13 +95,13 @@ export function CriteriaSection({
                   const [moved] = next.splice(index, 1);
                   next.splice(index - 1, 0, moved!);
                   void saveCriteria(next).then(() =>
-                    announce(`${criterion.name} déplacé en position ${index} sur ${next.length}.`),
+                    announce(t.moved(criterion.name, index, next.length)),
                   );
                 }}
               />
               <IconButton
                 text="↓"
-                label={`Descendre ${criterion.name}`}
+                label={t.moveDown(criterion.name)}
                 focusKey={`${criterion.id}:down`}
                 disabled={index === criteria.length - 1}
                 onClick={() => {
@@ -111,22 +109,18 @@ export function CriteriaSection({
                   const [moved] = next.splice(index, 1);
                   next.splice(index + 1, 0, moved!);
                   void saveCriteria(next).then(() =>
-                    announce(`${criterion.name} déplacé en position ${index + 2} sur ${next.length}.`),
+                    announce(t.moved(criterion.name, index + 2, next.length)),
                   );
                 }}
               />
               <IconButton
                 text="✕"
-                label={`Supprimer ${criterion.name}`}
+                label={t.deleteCriterion(criterion.name)}
                 focusKey={`${criterion.id}:delete`}
                 onClick={() => {
-                  if (
-                    confirm(
-                      `Supprimer le critère « ${criterion.name} » ? Les notes déjà données sur ce critère ne compteront plus.`,
-                    )
-                  ) {
+                  if (confirm(t.confirmDeleteCriterion(criterion.name))) {
                     void saveCriteria(criteria.filter((c) => c.id !== criterion.id)).then(() =>
-                      announce(`Critère ${criterion.name} supprimé.`),
+                      announce(t.criterionDeleted(criterion.name)),
                     );
                   }
                 }}
@@ -137,21 +131,21 @@ export function CriteriaSection({
       </ol>
       <form className="add" onSubmit={addCriterion}>
         <label htmlFor="new-name" className="sr-only">
-          Nom du nouveau critère
+          {t.optNewCriterionLabel}
         </label>
         <input
           ref={newNameRef}
           id="new-name"
           name="name"
           maxLength={60}
-          placeholder="Nouveau critère, ex. Première chute"
+          placeholder={t.optNewCriterionPlaceholder}
           autoComplete="off"
           required
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
         />
         <button type="submit" className="btn">
-          Ajouter
+          {t.optAdd}
         </button>
       </form>
     </section>

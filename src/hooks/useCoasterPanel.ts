@@ -1,16 +1,17 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { readCurrentValue, sendToCaptain, type CaptainPage } from '@/lib/captain';
 import { emptyCoasterRating } from '@/lib/emptyCoasterRating';
+import { t } from '@/lib/i18n';
 import {
-  DEFAULT_CRITERIA,
   computeAverage,
+  defaultCriteria,
   formatValue,
   type CoasterRating,
   type Criterion,
   type Score,
 } from '@/lib/rating';
 import { scoreText } from '@/lib/scoreText';
-import { criteriaItem, getRating, saveRating } from '@/lib/store';
+import { criteriaItem, getCriteria, getRating, saveRating } from '@/lib/store';
 import { useAnnouncer } from '@/hooks/useAnnouncer';
 
 export function useCoasterPanel(page: CaptainPage) {
@@ -29,14 +30,14 @@ export function useCoasterPanel(page: CaptainPage) {
 
   useEffect(() => {
     void (async () => {
-      setCriteria(await criteriaItem.getValue());
+      setCriteria(await getCriteria());
       setRating((await getRating(page.coasterId)) ?? emptyCoasterRating(page));
     })();
   }, [page.coasterId, page.name, page.park, page.url]);
 
   useEffect(() => {
     return criteriaItem.watch((next) => {
-      setCriteria(next ?? DEFAULT_CRITERIA);
+      setCriteria(next ?? defaultCriteria());
     });
   }, []);
 
@@ -53,9 +54,9 @@ export function useCoasterPanel(page: CaptainPage) {
   };
 
   const reason = !page.widget
-    ? 'Connecte-toi à Captain Coaster pour envoyer ta note. Tes critères sont déjà enregistrés.'
+    ? t.loginToSendSaved
     : page.readonly
-      ? 'Captain Coaster ne permet pas de noter ce coaster.'
+      ? t.errNotRateable
       : null;
   const upToDate = value !== null && captainValue === value;
   const canSend = value !== null && !busy && !reason && !upToDate;
@@ -73,7 +74,7 @@ export function useCoasterPanel(page: CaptainPage) {
     setStatus(null);
     await saveRating(next);
     const { value: avg } = computeAverage(criteria, next.scores);
-    announce(avg === null ? 'Pas encore de moyenne.' : `Moyenne : ${scoreText(avg)}.`);
+    announce(avg === null ? t.noAverageYet : t.averageAnnounce(scoreText(avg)));
   };
 
   const send = async () => {
@@ -81,8 +82,8 @@ export function useCoasterPanel(page: CaptainPage) {
     if (avg === null || !canSend) return;
 
     setBusy(true);
-    setStatus({ text: 'Envoi à Captain Coaster…', tone: 'info' });
-    announce('Envoi à Captain Coaster…');
+    setStatus({ text: t.sending, tone: 'info' });
+    announce(t.sending);
 
     const result = await sendToCaptain(page, avg);
     setBusy(false);
@@ -90,15 +91,12 @@ export function useCoasterPanel(page: CaptainPage) {
       const saved = { ...rating, sentValue: avg, sentAt: new Date().toISOString() };
       setRating(saved);
       await saveRating(saved);
-      setStatus({
-        text: `Note de ${formatValue(avg)} sur 5 enregistrée sur Captain Coaster.`,
-        tone: 'ok',
-      });
+      setStatus({ text: t.sentOk(formatValue(avg)), tone: 'ok' });
     } else {
       setStatus({ text: result.reason, tone: 'error' });
     }
     const finalStatus = result.ok
-      ? `Note de ${formatValue(avg)} sur 5 enregistrée sur Captain Coaster.`
+      ? t.sentOk(formatValue(avg))
       : result.reason;
     announce(finalStatus, !result.ok);
   };

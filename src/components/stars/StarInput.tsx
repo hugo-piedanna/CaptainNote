@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { t } from '@/lib/i18n';
 import { MAX_VALUE, MIN_VALUE, type Score } from '@/lib/rating';
 import { scoreText } from '@/lib/scoreText';
 import './StarInput.css';
@@ -135,8 +136,8 @@ export function StarInput({ label, value: valueProp, onChange, starsFocusKey, cl
       <button
         type="button"
         className="cn-stars__clear"
-        title="Ne s’applique pas à ce coaster"
-        aria-label={`${label} : ne s’applique pas à ce coaster`}
+        title={t.notApplicableHere}
+        aria-label={t.clearLabel(label)}
         aria-pressed={value === null}
         data-focus-key={clearFocusKey}
         onClick={() => {

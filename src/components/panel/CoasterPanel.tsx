@@ -1,4 +1,5 @@
 import { browser } from "#imports";
+import { t, withStars } from "@/lib/i18n";
 import type { CaptainPage } from "@/lib/captain";
 import { CoasterCriteriaList } from "@/components/panel/CoasterCriteriaList";
 import { CoasterSummary } from "@/components/panel/CoasterSummary";
@@ -22,18 +23,17 @@ export function CoasterPanel({ page }: { page: CaptainPage }) {
           <h2
             id="cn-title"
             className="cn__title">
-            Ta note détaillée
+            {t.panelTitle}
           </h2>
         </header>
         <p
           id="cn-help"
           className="cn-sr">
-          Pour chaque critère : flèches gauche et droite pour changer d’une demi-étoile, chiffres de 1 à 5, Suppr si le
-          critère ne s’applique pas.
+          {t.keyboardHelp}
         </p>
         <ul
           className="cn__list"
-          aria-label="Critères">
+          aria-label={t.criteriaListLabel}>
           <CoasterCriteriaList
             active={panel.active}
             rating={panel.rating}
@@ -59,14 +59,16 @@ export function CoasterPanel({ page }: { page: CaptainPage }) {
           aria-describedby={panel.reason ? "cn-send-why" : undefined}
           onClick={() => void panel.send()}>
           {panel.busy ? (
-            "Envoi…"
+            t.sendingShort
           ) : panel.upToDate ? (
-            "Déjà à jour sur Captain Coaster"
+            t.upToDate
           ) : panel.value === null ? (
-            "Envoyer"
+            t.send
           ) : (
             <>
-              Envoyer <StarsLabel value={panel.value} />
+              {withStars(t.sendStars)[0]}
+              <StarsLabel value={panel.value} />
+              {withStars(t.sendStars)[1]}
             </>
           )}
         </button>
@@ -81,7 +83,8 @@ export function CoasterPanel({ page }: { page: CaptainPage }) {
           className="cn__settings"
           data-focus-key="settings"
           onClick={() => void browser.runtime.sendMessage({ type: "open-options" })}>
-          Gérer mes critères<span className="cn-sr"> (ouvre un nouvel onglet)</span>
+          {t.manageCriteria}
+          <span className="cn-sr">{t.opensNewTab}</span>
         </button>
         <div
           ref={panel.regionRef}

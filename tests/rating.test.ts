@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_CRITERIA, computeAverage, newCriterionId, toCaptainValue, type Criterion } from '@/lib/rating';
+import { computeAverage, defaultCriteria, newCriterionId, toCaptainValue, type Criterion } from '@/lib/rating';
 
 const crit = (id: string, weight = 1, enabled = true): Criterion => ({ id, name: id, weight, enabled });
 
@@ -15,7 +15,7 @@ describe('toCaptainValue', () => {
 
 describe('computeAverage', () => {
   it('returns null when nothing is scored', () => {
-    expect(computeAverage(DEFAULT_CRITERIA, {})).toMatchObject({ raw: null, value: null, counted: 0 });
+    expect(computeAverage(defaultCriteria('fr'), {})).toMatchObject({ raw: null, value: null, counted: 0 });
   });
 
   it('weights criteria', () => {
@@ -39,7 +39,7 @@ describe('computeAverage', () => {
 describe('newCriterionId', () => {
   it('slugifies and avoids collisions', () => {
     expect(newCriterionId('Première chute', [])).toBe('premiere-chute');
-    expect(newCriterionId('Airtimes', DEFAULT_CRITERIA)).toBe('airtimes-2');
+    expect(newCriterionId('Airtimes', defaultCriteria('fr'))).toBe('airtimes-2');
     expect(newCriterionId('!!!', [])).toBe('critere');
   });
 });

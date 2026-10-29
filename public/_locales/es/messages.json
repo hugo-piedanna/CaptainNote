@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "Captain Note"
+  },
+  "extDescription": {
+    "message": "Puntúa las montañas rusas en Captain Coaster con tus propios criterios. La media se envía como nota sobre 5."
+  },
+  "actionTitle": {
+    "message": "Captain Note: ajustes y mis notas"
+  }
+}

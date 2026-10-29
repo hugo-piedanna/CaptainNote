@@ -1,3 +1,4 @@
+import { getLocale, t } from '@/lib/i18n';
 import { computeAverage, formatValue, type CoasterRating, type Criterion } from '@/lib/rating';
 import { IconButton } from '@/entrypoints/options/components/IconButton';
 
@@ -28,15 +29,15 @@ export function RatingsSection({
     <section aria-labelledby="ratings-title">
       <div className="section-head">
         <h2 id="ratings-title">
-          Mes notes {allRatings.length > 0 && <span className="count">({allRatings.length})</span>}
+          {t.optRatingsTitle} {allRatings.length > 0 && <span className="count">({allRatings.length})</span>}
         </h2>
         <label className="search">
-          <span className="sr-only">Rechercher un coaster</span>
+          <span className="sr-only">{t.optSearchLabel}</span>
           <input
             ref={searchRef}
             id="search"
             type="search"
-            placeholder="Coaster ou parc…"
+            placeholder={t.optSearchPlaceholder}
             value={search}
             onChange={(e) => onSearchInput(e.target.value)}
           />
@@ -46,16 +47,16 @@ export function RatingsSection({
         <table className="ratings" aria-labelledby="ratings-title">
           <thead>
             <tr>
-              <th scope="col">Coaster</th>
+              <th scope="col">{t.optColCoaster}</th>
               <th scope="col" className="num">
-                Moyenne
+                {t.optColAverage}
               </th>
               <th scope="col" className="num">
-                Sur Captain Coaster
+                {t.optColOnCaptain}
               </th>
-              <th scope="col">Modifiée</th>
+              <th scope="col">{t.optColModified}</th>
               <th scope="col">
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">{t.optColActions}</span>
               </th>
             </tr>
           </thead>
@@ -71,7 +72,7 @@ export function RatingsSection({
                       rel="noopener"
                       data-focus-key={`${rating.coasterId}:link`}>
                       {rating.name}
-                      <span className="sr-only"> (nouvel onglet)</span>
+                      <span className="sr-only">{t.newTab}</span>
                     </a>
                     <span className="park">{rating.park}</span>
                   </td>
@@ -79,7 +80,7 @@ export function RatingsSection({
                     {value === null ? (
                       <>
                         <span aria-hidden="true">–</span>
-                        <span className="sr-only">Aucune</span>
+                        <span className="sr-only">{t.noAverage}</span>
                       </>
                     ) : (
                       formatValue(value)
@@ -87,24 +88,22 @@ export function RatingsSection({
                   </td>
                   <td className="num">
                     {rating.sentValue === null ? (
-                      'Pas envoyée'
+                      t.notSent
                     ) : (
                       <>
                         {formatValue(rating.sentValue)}{' '}
                         <span aria-hidden="true">★</span>
-                        <span className="sr-only">étoile{rating.sentValue > 1 ? 's' : ''}</span>
+                        <span className="sr-only">{t.starWord(rating.sentValue)}</span>
                       </>
                     )}
                     {value !== null && rating.sentValue !== value && (
-                      <span
-                        className="badge"
-                        title="Ta moyenne a changé depuis le dernier envoi. Ouvre la page du coaster pour renvoyer.">
-                        à renvoyer
+                      <span className="badge" title={t.toResendTitle}>
+                        {t.toResend}
                       </span>
                     )}
                   </td>
                   <td>
-                    {new Date(rating.updatedAt).toLocaleDateString('fr-FR', {
+                    {new Date(rating.updatedAt).toLocaleDateString(getLocale(), {
                       day: 'numeric',
                       month: 'short',
                       year: 'numeric',
@@ -113,16 +112,12 @@ export function RatingsSection({
                   <td>
                     <IconButton
                       text="✕"
-                      label={`Supprimer la note de ${rating.name}`}
+                      label={t.deleteRating(rating.name)}
                       focusKey={`${rating.coasterId}:delete`}
                       onClick={() => {
-                        if (
-                          confirm(
-                            `Supprimer ta note détaillée de ${rating.name} ? La note sur Captain Coaster ne change pas.`,
-                          )
-                        ) {
+                        if (confirm(t.confirmDeleteRating(rating.name))) {
                           void deleteRating(rating.coasterId).then(() =>
-                            announce(`Note de ${rating.name} supprimée.`),
+                            announce(t.ratingDeleted(rating.name)),
                           );
                         }
                       }}
@@ -135,13 +130,10 @@ export function RatingsSection({
         </table>
       </div>
       {allRatings.length > 0 && shown.length === 0 && (
-        <p className="empty">Aucun coaster ne correspond à « {search.trim()} ».</p>
+        <p className="empty">{t.noMatch(search.trim())}</p>
       )}
       {allRatings.length === 0 && (
-        <p className="empty">
-          Aucune note pour l’instant. Ouvre la page d’un coaster sur Captain Coaster : le panneau « Ta note détaillée »
-          apparaît sous les étoiles.
-        </p>
+        <p className="empty">{t.optRatingsEmpty}</p>
       )}
     </section>
   );

@@ -4,12 +4,13 @@ export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-react'],
   manifest: ({ browser }) => ({
-    name: 'Captain Note',
-    description:
-      'Note les coasters sur Captain Coaster avec tes propres critères. La moyenne est envoyée comme note sur 5.',
+    // Manifest strings follow the browser language (public/_locales, FR-ui-locale-multi).
+    name: '__MSG_extName__',
+    description: '__MSG_extDescription__',
+    default_locale: 'en',
     permissions: ['storage'],
     host_permissions: ['https://captaincoaster.com/*'],
-    action: { default_title: 'Captain Note : réglages et mes notes' },
+    action: { default_title: '__MSG_actionTitle__' },
     ...(browser === 'firefox' && {
       browser_specific_settings: {
         gecko: {

@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "Captain Note"
+  },
+  "extDescription": {
+    "message": "Bewerte Coaster auf Captain Coaster mit deinen eigenen Kriterien. Der Durchschnitt wird als Bewertung von 5 gesendet."
+  },
+  "actionTitle": {
+    "message": "Captain Note: Einstellungen und meine Bewertungen"
+  }
+}

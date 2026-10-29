@@ -1,9 +1,12 @@
 // @vitest-environment jsdom
 import { act, render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import type { Score } from '@/lib/rating';
 import { scoreText } from '@/lib/scoreText';
 import { StarInput } from '@/components/stars/StarInput';
+import { setLocale } from '@/lib/i18n';
+
+beforeEach(() => setLocale('fr'));
 
 function mount(value: Score = null) {
   const changes: Score[] = [];
@@ -29,6 +32,16 @@ describe('scoreText', () => {
     expect(scoreText(1)).toBe('1 étoile sur 5');
     expect(scoreText(0.5)).toBe('0,5 étoile sur 5');
     expect(scoreText(null)).toBe('Ne s’applique pas');
+  });
+
+  it('follows the display language', () => {
+    setLocale('en');
+    expect(scoreText(3.5)).toBe('3.5 stars out of 5');
+    expect(scoreText(1)).toBe('1 star out of 5');
+    setLocale('de');
+    expect(scoreText(0.5)).toBe('0,5 Sterne von 5');
+    setLocale('es');
+    expect(scoreText(null)).toBe('No aplica');
   });
 });
 
