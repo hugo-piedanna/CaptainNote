@@ -1,12 +1,13 @@
-.cn-stars { display: flex; align-items: center; gap: 8px; }
-.cn-stars__track { display: flex; gap: 2px; cursor: pointer; touch-action: none; padding: 2px; outline: none; }
+/* Stars shrink below 24px when the card is narrow (Captain Coaster's sidebar at tablet widths) so the clear button stays inside. */
+.cn-stars { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cn-stars__track { display: flex; gap: 2px; cursor: pointer; touch-action: none; padding: 2px; outline: none; min-width: 0; }
 .cn-stars__track:focus-visible { outline: 2px solid var(--cn-accent); outline-offset: 1px; }
-.cn-star { width: 24px; height: 24px; display: block; }
+.cn-star { flex: 0 1 24px; width: 24px; min-width: 0; height: auto; aspect-ratio: 1; display: block; }
 .cn-star__on { stop-color: var(--cn-star); }
 .cn-star__off { stop-color: var(--cn-star-off); }
 .cn-star__shape { stroke: var(--cn-star-stroke); stroke-width: 1; stroke-linejoin: round; }
 .cn-stars__clear { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: none;
-  border-radius: 50%; background: none; color: var(--cn-muted); cursor: pointer; }
+  border-radius: 50%; background: none; color: var(--cn-muted); cursor: pointer; flex-shrink: 0; }
 .cn-stars__clear svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 .cn-stars__clear:hover { color: var(--cn-ink); background: var(--cn-subtle); }
 .cn-stars__clear:focus-visible { outline: 2px solid var(--cn-accent); outline-offset: 1px; }
