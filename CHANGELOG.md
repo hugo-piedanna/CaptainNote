@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interface available in English, French, Spanish and German, the languages offered by Captain Coaster (`FR-ui-locale-multi`). The coaster panel follows the page language, the settings page the last Captain Coaster language seen (or the browser language), the extension name and description the browser language. Other languages fall back to English.
 - Default criteria names, numbers and dates follow the display language. Saved criteria are not renamed.
 
+### Changed
+
+- New default criteria, sorted by relevance and all enabled with Normal weight: Layout and pacing, Comfort and smoothness, Rerideability, Theming, Ride length, Queue, Park operations. Intensity and Airtime are no longer defaults. Saved criteria are not changed.
+
 ## [0.1.0] - 2026-10-27
 
 ### Added

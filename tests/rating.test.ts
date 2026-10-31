@@ -39,7 +39,7 @@ describe('computeAverage', () => {
 describe('newCriterionId', () => {
   it('slugifies and avoids collisions', () => {
     expect(newCriterionId('Première chute', [])).toBe('premiere-chute');
-    expect(newCriterionId('Airtimes', defaultCriteria('fr'))).toBe('airtimes-2');
+    expect(newCriterionId('Layout', defaultCriteria('fr'))).toBe('layout-2');
     expect(newCriterionId('!!!', [])).toBe('critere');
   });
 });

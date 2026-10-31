@@ -10,7 +10,7 @@
 
 ---
 
-Captain Note adds a detailed rating panel to every coaster page on Captain Coaster. Each coaster is rated on several criteria (intensity, airtime, theming…), weighted by how much they matter to the user. The extension computes the weighted average and submits it as a rating out of 5 to the user's Captain Coaster account.
+Captain Note adds a detailed rating panel to every coaster page on Captain Coaster. Each coaster is rated on several criteria (layout, comfort, theming…), weighted by how much they matter to the user. The extension computes the weighted average and submits it as a rating out of 5 to the user's Captain Coaster account.
 
 ## Table of contents
 
@@ -76,7 +76,7 @@ Default criteria are shown in the current language until they are edited; saved 
 
 ### Default criteria
 
-Intensity, Airtime, Layout and pacing, Comfort and smoothness, Theming, Rerideability, and Capacity and wait time (disabled by default).
+Layout and pacing, Comfort and smoothness, Rerideability, Theming, Ride length, Queue, and Park operations, sorted by relevance. All are enabled with Normal weight.
 
 ### How the rating is computed
 
@@ -84,8 +84,8 @@ The final rating is the average of the rated criteria, weighted by their weight 
 
 | Criterion              | Score | Weight         |
 | ---------------------- | ----- | -------------- |
-| Intensity              | 5     | Essential (×3) |
-| Airtime                | 4.5   | Important (×2) |
+| Layout and pacing      | 5     | Essential (×3) |
+| Rerideability          | 4.5   | Important (×2) |
 | Comfort and smoothness | 3     | Normal (×1)    |
 
 (5×3 + 4.5×2 + 3×1) / 6 = **4.5**

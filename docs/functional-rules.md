@@ -24,7 +24,7 @@ The settings page MUST open from the extension toolbar button. It MUST allow man
 
 ## FR-criteria-defaults
 
-Default criteria MUST be, in this order (French names; translated per `FR-ui-locale-multi`): Intensité, Airtimes, Layout et rythme, Confort et fluidité, Thématisation, Envie de le refaire (all enabled, Normal weight), then Débit et attente (user-configurable but **disabled** by default, Normal weight).
+Default criteria MUST be, in this order of relevance (French names; translated per `FR-ui-locale-multi`): Layout et rythme, Confort et fluidité, Envie de le refaire, Thématisation, Longueur du tour, File d’attente, Gestion par le parc. All are enabled with Normal weight.
 
 ## FR-criteria-customization
 

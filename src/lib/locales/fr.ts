@@ -7,13 +7,13 @@ const s = (n: number) => (n > 1 ? 's' : '');
 export const fr = {
   // ---------- Default criteria and weights ----------
   criteria: {
-    intensite: 'Intensité',
-    airtimes: 'Airtimes',
     layout: 'Layout et rythme',
     confort: 'Confort et fluidité',
-    theming: 'Thématisation',
     rejouabilite: 'Envie de le refaire',
-    attente: 'Débit et attente',
+    theming: 'Thématisation',
+    longueur: 'Longueur du tour',
+    attente: 'File d’attente',
+    gestion: 'Gestion par le parc',
   },
   weights: ['Ignoré', 'Normal', 'Important', 'Essentiel'] as [string, string, string, string],
 

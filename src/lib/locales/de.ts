@@ -5,13 +5,13 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 export const de: Messages = {
   // ---------- Default criteria and weights ----------
   criteria: {
-    intensite: 'Intensität',
-    airtimes: 'Airtimes',
     layout: 'Layout und Rhythmus',
     confort: 'Komfort und Laufruhe',
-    theming: 'Thematisierung',
     rejouabilite: 'Lust auf eine weitere Fahrt',
-    attente: 'Kapazität und Wartezeit',
+    theming: 'Thematisierung',
+    longueur: 'Fahrtlänge',
+    attente: 'Warteschlange',
+    gestion: 'Parkbetrieb',
   },
   weights: ['Ignoriert', 'Normal', 'Wichtig', 'Essenziell'],
 

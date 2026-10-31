@@ -27,12 +27,12 @@ export interface CoasterRating {
 export const MIN_VALUE = 0.5;
 export const MAX_VALUE = 5;
 /** Default criteria, in order. Ids stay stable across languages: scores are keyed by id. */
-const DEFAULT_IDS = ['intensite', 'airtimes', 'layout', 'confort', 'theming', 'rejouabilite', 'attente'] as const;
+const DEFAULT_IDS = ['layout', 'confort', 'rejouabilite', 'theming', 'longueur', 'attente', 'gestion'] as const;
 
-/** Default criteria named in `locale` (FR-ui-locale-multi). Only "attente" starts disabled. */
+/** Default criteria named in `locale` (FR-ui-locale-multi), sorted by relevance, all enabled. */
 export function defaultCriteria(locale: Locale = getLocale()): Criterion[] {
   const names = messagesFor(locale).criteria;
-  return DEFAULT_IDS.map((id) => ({ id, name: names[id], weight: 1, enabled: id !== 'attente' }));
+  return DEFAULT_IDS.map((id) => ({ id, name: names[id], weight: 1, enabled: true }));
 }
 
 /** Snaps any number to a valid Captain Coaster value (0.5 to 5, half steps). */

@@ -5,13 +5,13 @@ const s = (n: number) => (n === 1 ? '' : 's');
 export const en: Messages = {
   // ---------- Default criteria and weights ----------
   criteria: {
-    intensite: 'Intensity',
-    airtimes: 'Airtime',
     layout: 'Layout and pacing',
     confort: 'Comfort and smoothness',
-    theming: 'Theming',
     rejouabilite: 'Rerideability',
-    attente: 'Capacity and wait time',
+    theming: 'Theming',
+    longueur: 'Ride length',
+    attente: 'Queue',
+    gestion: 'Park operations',
   },
   weights: ['Ignored', 'Normal', 'Important', 'Essential'],
 

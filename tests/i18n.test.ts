@@ -59,25 +59,25 @@ describe('defaultCriteria', () => {
   it('keeps ids, order and state across languages', () => {
     const fr = defaultCriteria('fr');
     expect(fr.map((c) => c.name)).toEqual([
-      'Intensité',
-      'Airtimes',
       'Layout et rythme',
       'Confort et fluidité',
-      'Thématisation',
       'Envie de le refaire',
-      'Débit et attente',
+      'Thématisation',
+      'Longueur du tour',
+      'File d’attente',
+      'Gestion par le parc',
     ]);
     for (const locale of LOCALES) {
       const criteria = defaultCriteria(locale);
       expect(criteria.map((c) => c.id)).toEqual(fr.map((c) => c.id));
       expect(criteria.map((c) => [c.weight, c.enabled])).toEqual(fr.map((c) => [c.weight, c.enabled]));
     }
-    expect(fr.at(-1)).toMatchObject({ id: 'attente', enabled: false });
+    expect(fr.every((c) => c.enabled && c.weight === 1)).toBe(true);
   });
 
   it('uses the display language by default', () => {
     setLocale('es');
-    expect(defaultCriteria()[0]!.name).toBe('Intensidad');
+    expect(defaultCriteria()[0]!.name).toBe('Trazado y ritmo');
   });
 });
 
