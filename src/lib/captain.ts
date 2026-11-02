@@ -56,13 +56,25 @@ export function readPage(doc: Document, location: Location): CaptainPage | null 
   return {
     coasterId,
     name,
-    park: doc.querySelector(SELECTORS.parkLink)?.textContent?.trim() ?? '',
+    park: readPark(doc),
     url: location.origin + location.pathname,
     locale: location.pathname.split('/')[1] ?? 'en',
     widget: usable,
     currentValue: usable ? Number(usable.dataset.ratingCurrentValueValue) || 0 : 0,
     readonly: usable?.dataset.ratingReadonlyValue === 'true',
   };
+}
+
+/**
+ * The page header also has an icon-only "back" link to the park (aria-label, no text),
+ * placed before the visible park name, so the first link with text wins.
+ */
+function readPark(doc: Document): string {
+  for (const link of doc.querySelectorAll(SELECTORS.parkLink)) {
+    const text = link.textContent?.trim();
+    if (text) return text;
+  }
+  return '';
 }
 
 export function readCurrentValue(widget: HTMLElement): number {

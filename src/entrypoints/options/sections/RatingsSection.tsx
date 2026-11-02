@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFocusRestore } from '@/hooks/useFocusRestore';
 import { t } from '@/lib/i18n';
-import { filterRows, RATING_SORTS, sortRows, type RatingSort } from '@/lib/ratingsOverview';
+import { filterRows, paginate, RATING_SORTS, sortRows, type RatingSort } from '@/lib/ratingsOverview';
 import { Icon } from '@/entrypoints/options/components/Icon';
+import { IconButton } from '@/entrypoints/options/components/IconButton';
 import { Section } from '@/entrypoints/options/components/Section';
 import type { RatingsModel } from '@/entrypoints/options/hooks/useRatings';
 import { useAnnounce, useConfirm } from '@/entrypoints/options/services';
@@ -13,10 +14,13 @@ export function RatingsSection({ model }: { model: RatingsModel }) {
   const confirm = useConfirm();
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<RatingSort>('recent');
+  const [page, setPage] = useState(1);
   const searchRef = useRef<HTMLInputElement>(null);
-  const body = useFocusRestore<HTMLTableSectionElement>(searchRef, [model.rows, search, sort]);
+  const body = useFocusRestore<HTMLTableSectionElement>(searchRef, [model.rows, search, sort, page]);
 
   const shown = sortRows(filterRows(model.rows, search), sort);
+  // Clamped, so deleting the last row of the last page shows the previous one.
+  const current = paginate(shown, page);
   const total = model.rows.length;
 
   // Announces the result count once typing pauses.
@@ -60,7 +64,10 @@ export function RatingsSection({ model }: { model: RatingsModel }) {
               className="field"
               placeholder={t.optSearchPlaceholder}
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
             />
           </label>
           <label className="sort">
@@ -68,7 +75,10 @@ export function RatingsSection({ model }: { model: RatingsModel }) {
             <select
               className="field"
               value={sort}
-              onChange={(e) => setSort(e.target.value as RatingSort)}>
+              onChange={(e) => {
+                setSort(e.target.value as RatingSort);
+                setPage(1);
+              }}>
               {RATING_SORTS.map((key) => (
                 <option
                   key={key}
@@ -104,7 +114,7 @@ export function RatingsSection({ model }: { model: RatingsModel }) {
           <tbody
             ref={body.containerRef}
             onFocusCapture={body.onFocusCapture}>
-            {shown.map((row) => (
+            {current.rows.map((row) => (
               <RatingRow
                 key={row.rating.coasterId}
                 row={row}
@@ -114,6 +124,34 @@ export function RatingsSection({ model }: { model: RatingsModel }) {
           </tbody>
         </table>
       </div>
+      {current.pageCount > 1 && (
+        <nav
+          className="pager"
+          aria-label={t.optPagerLabel}>
+          <span className="pager__range">{t.optPageRange(current.from, current.to, shown.length)}</span>
+          <div className="pager__controls">
+            <IconButton
+              icon="left"
+              label={t.optPagePrev}
+              focusKey="pager:prev"
+              disabled={current.page === 1}
+              onClick={() => setPage(current.page - 1)}
+            />
+            <span
+              className="pager__status"
+              aria-live="polite">
+              {t.optPageOf(current.page, current.pageCount)}
+            </span>
+            <IconButton
+              icon="right"
+              label={t.optPageNext}
+              focusKey="pager:next"
+              disabled={current.page === current.pageCount}
+              onClick={() => setPage(current.page + 1)}
+            />
+          </div>
+        </nav>
+      )}
       {total > 0 && shown.length === 0 && <p className="empty">{t.noMatch(search.trim())}</p>}
       {model.loaded && total === 0 && (
         <div className="empty empty--box">

@@ -1,4 +1,4 @@
-/** Settings page list and summary (FR-options-summary, FR-options-ratings-sort). Pure logic, no browser APIs. */
+/** Settings page list and summary (FR-options-summary, FR-options-ratings-sort, FR-options-ratings-pagination). Pure logic, no browser APIs. */
 import { getLocale, type Locale } from './i18n';
 import { computeAverage, type CoasterRating, type Criterion } from './rating';
 
@@ -39,11 +39,43 @@ export function sortRows(rows: RatingRow[], sort: RatingSort, locale: Locale = g
   return [...rows].sort(compare[sort]);
 }
 
-/** Case-insensitive match on coaster or park name. */
+/** Lower case without accents, so “asterix” finds “Parc Astérix”. */
+function fold(text: string): string {
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+}
+
+/** Case- and accent-insensitive match on coaster or park name. */
 export function filterRows(rows: RatingRow[], query: string): RatingRow[] {
-  const q = query.trim().toLowerCase();
+  const q = fold(query.trim());
   if (!q) return rows;
-  return rows.filter(({ rating }) => `${rating.name} ${rating.park}`.toLowerCase().includes(q));
+  return rows.filter(({ rating }) => fold(rating.name).includes(q) || fold(rating.park).includes(q));
+}
+
+/** Rows per page of the ratings list (FR-options-ratings-pagination). */
+export const PAGE_SIZE = 10;
+
+export interface RatingsPage {
+  rows: RatingRow[];
+  /** 1-based, clamped to the last page. */
+  page: number;
+  pageCount: number;
+  /** 1-based index of the first and last row shown, 0 when empty. */
+  from: number;
+  to: number;
+}
+
+export function paginate(rows: RatingRow[], page: number, size = PAGE_SIZE): RatingsPage {
+  const pageCount = Math.max(1, Math.ceil(rows.length / size));
+  const current = Math.min(Math.max(1, Math.floor(page) || 1), pageCount);
+  const start = (current - 1) * size;
+  const slice = rows.slice(start, start + size);
+  return {
+    rows: slice,
+    page: current,
+    pageCount,
+    from: slice.length ? start + 1 : 0,
+    to: start + slice.length,
+  };
 }
 
 export interface Summary {

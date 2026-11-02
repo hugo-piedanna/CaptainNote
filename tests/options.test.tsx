@@ -180,6 +180,36 @@ describe('options page', () => {
     expect(rows().map((row) => row.querySelector('a')?.firstChild?.textContent)).toEqual(['Zadra', 'Anaconda']);
   });
 
+  it('pages the list 10 by 10 and goes back to page 1 on search', async () => {
+    fake.ratings.reset(
+      Object.fromEntries(
+        Array.from({ length: 23 }, (_, i) => [
+          i + 1,
+          rating(i + 1, `Coaster ${String(i + 1).padStart(2, '0')}`, 3, null, `2026-01-${String(i + 1).padStart(2, '0')}T00:00:00Z`),
+        ]),
+      ),
+    );
+    await mount();
+    const rows = () => document.querySelectorAll('.ratings tbody tr');
+    expect(rows()).toHaveLength(10);
+    expect(screen.getByText('1–10 sur 23')).toBeTruthy();
+
+    const prev = screen.getByRole('button', { name: 'Page précédente' }) as HTMLButtonElement;
+    const next = screen.getByRole('button', { name: 'Page suivante' }) as HTMLButtonElement;
+    expect(prev.disabled).toBe(true);
+    fireEvent.click(next);
+    fireEvent.click(next);
+    expect(rows()).toHaveLength(3);
+    expect(screen.getByText('Page 3 sur 3')).toBeTruthy();
+    expect(next.disabled).toBe(true);
+
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'parc' } });
+    expect(screen.getByText('Page 1 sur 3')).toBeTruthy();
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Coaster 2' } });
+    expect(rows()).toHaveLength(4);
+    expect(document.querySelector('.pager')).toBeNull();
+  });
+
   it('credits the author with plain links in the footer', async () => {
     await mount();
     const footer = document.querySelector('footer')!;

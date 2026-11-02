@@ -66,7 +66,7 @@ npm install
 Criteria, weights and the list of ratings are managed from the settings page, opened with the extension's toolbar button. It is one page with three sections, reachable from a navigation bar that stays visible:
 
 - **Criteria**: rename, reorder, enable or disable each criterion, and pick its weight (Normal ×1, Important ×2, Essential ×3). Disabling a criterion removes it from the average.
-- **Ratings**: every detailed rating with its current average and its status on Captain Coaster. Search by coaster or park, sort by most recent, name or highest average.
+- **Ratings**: every detailed rating with its current average and its status on Captain Coaster. Search by coaster or park (accents ignored), sort by most recent, name or highest average, 10 ratings per page.
 - **Backup**: export a JSON file, or import one by merging it with your data or replacing everything.
 
 The summary at the top counts your detailed ratings, those up to date on Captain Coaster, those waiting to be sent, and your active criteria. Deleting or replacing data always asks for confirmation first.
@@ -132,7 +132,7 @@ Application source lives under [`src/`](src/) (`srcDir` in WXT). Tests stay in [
 | [`src/components/panel/CoasterPanel.tsx`](src/components/panel/CoasterPanel.tsx) | Detailed rating panel UI.                                                            |
 | [`src/entrypoints/captain.content.tsx`](src/entrypoints/captain.content.tsx) | Mounts the panel on coaster pages (shadow root).                                     |
 | [`src/entrypoints/options/`](src/entrypoints/options/)                     | Settings page: `sections/` (criteria, ratings, backup), `hooks/` (one per data domain), `components/`, `services.tsx` (live region and confirmation dialog). |
-| [`src/lib/ratingsOverview.ts`](src/lib/ratingsOverview.ts)                 | Rating status, summary, sort and search of the settings list. No browser APIs.           |
+| [`src/lib/ratingsOverview.ts`](src/lib/ratingsOverview.ts)                 | Rating status, summary, sort, search and pages of the settings list. No browser APIs.    |
 | [`src/entrypoints/background.ts`](src/entrypoints/background.ts)           | Opens the settings from the toolbar button.                                              |
 
 ### Captain Coaster integration

@@ -126,7 +126,7 @@ Each detailed rating MUST have one status, based on its current average (`FR-rat
 
 ## FR-options-ratings-sort
 
-The ratings list MUST be filterable by coaster or park name (case-insensitive substring) and sortable by:
+The ratings list MUST be filterable by coaster or park name (case- and accent-insensitive substring) and sortable by:
 
 - **Most recent** (default): last modification date, newest first.
 - **Name**: coaster name A→Z, compared for the display language.
@@ -141,3 +141,25 @@ The settings page footer (`FR-options-layout`) MUST include the mention “Made 
 - The mention MUST appear only on the settings page, never in the panel injected into Captain Coaster pages.
 - Links MUST be plain links opening in a new tab (`target="_blank"`, `rel="noopener noreferrer"`). No URL parameter MUST carry user data.
 - No image, font, script, or widget from these sites MUST be loaded: nothing leaves the browser until the user clicks a link (`FR-privacy-network-send`). No permission is added (`FR-privacy-permissions`).
+
+## FR-options-ratings-pagination
+
+The ratings list (`FR-options-ratings-sort`) MUST show at most 10 ratings per page, after filtering and sorting.
+
+- When more than 10 ratings match, a pager MUST show the range shown and the total (e.g. “11–20 of 23”), the current page out of the page count, and previous / next buttons, disabled on the first and last page. With 10 matches or fewer, no pager is shown.
+- Changing the search or the sort MUST go back to page 1. If deleting a rating empties the current page, the previous page MUST be shown.
+- The current page MUST NOT be persisted. Texts follow `FR-ui-locale-multi`.
+- Every cell of a row MUST use the same text size; secondary information (park name, status badge) MAY be smaller.
+
+## FR-captain-park-name
+
+The park name stored with a rating (`FR-storage-local-only`) MUST be the text of the first link to a park page (`/parks/`) that has visible text. Icon-only links (such as the header “back” link) MUST be skipped.
+
+- A stored rating with an empty park name MUST get the park name read from the page when its coaster page is opened, without changing its modification date.
+
+## FR-rating-captain-match
+
+When the coaster panel (`FR-ui-coaster-panel`) shows a current average (`FR-rating-weighted-average`) equal to the value Captain Coaster already displays for the user, the rating MUST be recorded as sent with that value (last sent value and date updated locally), so its status is **Up to date** (`FR-options-summary`).
+
+- This MUST NOT send anything to Captain Coaster (`FR-rating-submit-trigger`); it only reads the value already on the page.
+- It applies only while the coaster page is open and the user is logged in (the star widget is present).

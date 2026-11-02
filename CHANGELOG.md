@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-11-02
 
 ### Added
 
@@ -15,12 +15,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT license (`LICENSE`).
 - Settings page footer: “Made by Hugo Piedanna” with links to the author’s website and the source code (`FR-options-author-footer`).
 - Ratings list: status per coaster (up to date, to resend, not sent, no average) and sort by most recent, name or highest average (`FR-options-ratings-sort`).
+- Ratings list shows 10 ratings per page, with previous / next buttons (`FR-options-ratings-pagination`).
 
 ### Changed
 
 - Settings page redesigned (`FR-options-layout`): single page with a sticky navigation, segmented weight control, in-page confirmation dialog for destructive actions, explicit Merge / Replace choice for import, mobile layout, and rewritten texts in every language.
 - The Ignored weight is removed: the on/off switch is the only way to exclude a criterion (`FR-criteria-weights`). Criteria saved or imported as Ignored are loaded as disabled with Normal weight.
 - New default criteria, sorted by relevance and all enabled with Normal weight: Layout and pacing, Comfort and smoothness, Rerideability, Theming, Ride length, Queue, Park operations. Intensity and Airtime are no longer defaults. Saved criteria are not changed.
+
+### Fixed
+
+- Park name was saved empty: the icon-only “back” link of the coaster page was read instead of the park name, so searching by park found nothing. Ratings without a park get it back when their coaster page is opened (`FR-captain-park-name`).
+- Ratings list search ignores accents (“asterix” finds “Parc Astérix”).
+- Ratings list rows use one text size across all cells.
+- A detailed rating whose average equals the rating already on Captain Coaster is now shown as up to date instead of not sent (`FR-rating-captain-match`).
 
 ## [0.1.0] - 2026-10-27
 
@@ -34,4 +42,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contributor workflow: `AGENTS.md` and `docs/functional-rules.md` (`FR-*` rules).
 - Privacy policy in `PRIVACY.md`.
 
+[1.0.0]: https://github.com/hugo-piedanna/CaptainNote/releases/tag/v1.0.0
 [0.1.0]: https://github.com/hugo-piedanna/CaptainNote/releases/tag/v0.1.0

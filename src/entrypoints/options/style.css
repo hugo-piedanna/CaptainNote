@@ -183,19 +183,26 @@ input.criterion__name:focus { border-color: var(--accent); outline: none; backgr
 .ratings { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .ratings thead th { text-align: left; font-size: 13px; font-weight: 600; color: var(--muted); background: var(--raised);
   padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-.ratings td, .ratings tbody th { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; text-align: left; font-weight: inherit; }
+/* One text size for every cell of a row; only weight and color tell them apart. */
+.ratings td, .ratings tbody th { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; text-align: left;
+  font-size: 15px; line-height: 1.4; font-weight: inherit; }
 .ratings tbody tr:last-child > * { border-bottom: 0; }
 .ratings tbody tr:hover { background: var(--raised); }
 .rating__coaster a { color: var(--ink); font-weight: 650; text-decoration: none; }
 .rating__coaster a:hover { color: var(--accent); text-decoration: underline; }
-.rating__park { display: block; color: var(--muted); font-size: 14px; }
+.rating__park { display: block; color: var(--muted); font-size: 13px; }
 .ratings .num { text-align: right; white-space: nowrap; }
-.rating__avg { font: 700 24px/1 var(--display); }
+.rating__avg { font-weight: 700; }
 .rating__sent { white-space: nowrap; }
 .rating__sent-value { display: inline-block; min-width: 3.2em; font-weight: 600; }
 .star { color: var(--star); }
-.rating__date { color: var(--muted); font-size: 14px; white-space: nowrap; }
+.rating__date { color: var(--muted); white-space: nowrap; }
 .rating__actions { width: 1%; }
+
+.pager { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px;
+  color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.pager__controls { display: flex; align-items: center; gap: 6px; }
+.pager__status { min-width: 7em; text-align: center; color: var(--ink); font-weight: 600; }
 
 .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 99px; vertical-align: 1px; }
 .badge--synced { color: var(--ok); background: var(--ok-bg); }
@@ -271,6 +278,6 @@ input.criterion__name:focus { border-color: var(--accent); outline: none; backgr
   .rating__coaster { grid-column: 1; }
   .rating__avg { grid-column: 2; grid-row: 1; }
   .rating__sent, .rating__date { grid-column: 1; }
-  .rating__sent::before, .rating__date::before { content: attr(data-label) ' · '; color: var(--muted); font-size: 13px; }
+  .rating__sent::before, .rating__date::before { content: attr(data-label) ' · '; color: var(--muted); }
   .rating__actions { grid-column: 2; grid-row: 2 / 4; align-self: end; width: auto; }
 }

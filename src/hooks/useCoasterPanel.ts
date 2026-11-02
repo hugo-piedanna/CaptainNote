@@ -6,6 +6,7 @@ import {
   computeAverage,
   defaultCriteria,
   formatValue,
+  matchCaptainValue,
   type CoasterRating,
   type Criterion,
   type Score,
@@ -31,7 +32,15 @@ export function useCoasterPanel(page: CaptainPage) {
   useEffect(() => {
     void (async () => {
       setCriteria(await getCriteria());
-      setRating((await getRating(page.coasterId)) ?? emptyCoasterRating(page));
+      const stored = await getRating(page.coasterId);
+      // Ratings saved while the park could not be read get it back on the next visit.
+      if (stored && !stored.park && page.park) {
+        const repaired = { ...stored, park: page.park };
+        await saveRating(repaired);
+        setRating(repaired);
+      } else {
+        setRating(stored ?? emptyCoasterRating(page));
+      }
     })();
   }, [page.coasterId, page.name, page.park, page.url]);
 
@@ -59,6 +68,14 @@ export function useCoasterPanel(page: CaptainPage) {
       ? t.errNotRateable
       : null;
   const upToDate = value !== null && captainValue === value;
+
+  // Nothing to send when Captain Coaster already has this value: record it as sent.
+  useEffect(() => {
+    const synced = matchCaptainValue(rating, value, captainValue, new Date().toISOString());
+    if (!synced) return;
+    setRating(synced);
+    void saveRating(synced);
+  }, [value, captainValue, rating.sentValue]);
   const canSend = value !== null && !busy && !reason && !upToDate;
 
   const setScore = async (criterionId: string, score: Score) => {

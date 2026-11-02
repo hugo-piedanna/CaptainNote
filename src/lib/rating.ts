@@ -94,6 +94,20 @@ export function computeAverage(criteria: Criterion[], scores: Record<string, Sco
   return { raw, value: toCaptainValue(raw), counted, active: active.length };
 }
 
+/**
+ * When Captain Coaster already shows the current average, the rating counts as sent
+ * (FR-rating-captain-match). Returns the rating to save, or null when nothing changes.
+ */
+export function matchCaptainValue(
+  rating: CoasterRating,
+  value: number | null,
+  captainValue: number,
+  now: string,
+): CoasterRating | null {
+  if (value === null || captainValue !== value || rating.sentValue === value) return null;
+  return { ...rating, sentValue: value, sentAt: now };
+}
+
 export function formatValue(value: number | null, digits = 1): string {
   if (value === null) return '–';
   return value.toLocaleString(getLocale(), { minimumFractionDigits: 0, maximumFractionDigits: digits });

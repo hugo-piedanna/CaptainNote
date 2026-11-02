@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   computeAverage,
   defaultCriteria,
+  matchCaptainValue,
   newCriterionId,
   normalizeCriterion,
   toCaptainValue,
+  type CoasterRating,
   type Criterion,
 } from '@/lib/rating';
 
@@ -61,5 +63,31 @@ describe('newCriterionId', () => {
     expect(newCriterionId('Première chute', [])).toBe('premiere-chute');
     expect(newCriterionId('Layout', defaultCriteria('fr'))).toBe('layout-2');
     expect(newCriterionId('!!!', [])).toBe('critere');
+  });
+});
+
+describe('matchCaptainValue', () => {
+  const base: CoasterRating = {
+    coasterId: 1,
+    name: 'Zadra',
+    park: 'Energylandia',
+    url: 'https://captaincoaster.com/fr/coasters/1',
+    scores: { a: 4 },
+    sentValue: null,
+    updatedAt: '2026-01-01T00:00:00Z',
+    sentAt: null,
+  };
+  const now = '2026-02-01T00:00:00Z';
+
+  it('records the average as sent when Captain Coaster already shows it', () => {
+    expect(matchCaptainValue(base, 4, 4, now)).toEqual({ ...base, sentValue: 4, sentAt: now });
+    expect(matchCaptainValue({ ...base, sentValue: 3 }, 4, 4, now)?.sentValue).toBe(4);
+  });
+
+  it('changes nothing otherwise', () => {
+    expect(matchCaptainValue(base, 4, 3.5, now)).toBeNull();
+    expect(matchCaptainValue(base, 4, 0, now)).toBeNull();
+    expect(matchCaptainValue(base, null, 0, now)).toBeNull();
+    expect(matchCaptainValue({ ...base, sentValue: 4 }, 4, 4, now)).toBeNull();
   });
 });

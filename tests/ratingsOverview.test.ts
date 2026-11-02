@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { moveCriterion, type CoasterRating, type Criterion } from '@/lib/rating';
-import { filterRows, ratingStatus, sortRows, summarize, toRows } from '@/lib/ratingsOverview';
+import { filterRows, paginate, ratingStatus, sortRows, summarize, toRows } from '@/lib/ratingsOverview';
 
 const criteria: Criterion[] = [
   { id: 'a', name: 'A', weight: 1, enabled: true },
@@ -92,6 +92,34 @@ describe('filterRows', () => {
     expect(filterRows(rows, 'LAND').map((r) => r.rating.coasterId).sort()).toEqual([1, 3]);
     expect(filterRows(rows, '  ')).toHaveLength(4);
     expect(filterRows(rows, 'nothing')).toHaveLength(0);
+  });
+
+  it('ignores accents', () => {
+    const withAccent = toRows(criteria, { 9: rating(9, 'Tonnerre de Zeus', 'Parc Astérix', 4, null, '2026-01-01T00:00:00Z') });
+    expect(filterRows(withAccent, 'asterix')).toHaveLength(1);
+    expect(filterRows(withAccent, 'ASTÉRIX')).toHaveLength(1);
+  });
+});
+
+describe('paginate', () => {
+  const many = toRows(
+    criteria,
+    Object.fromEntries(
+      Array.from({ length: 23 }, (_, i) => [i + 1, rating(i + 1, `C${i + 1}`, 'P', 3, null, '2026-01-01T00:00:00Z')]),
+    ),
+  );
+
+  it('cuts the list in pages of 10', () => {
+    expect(paginate(many, 1)).toMatchObject({ page: 1, pageCount: 3, from: 1, to: 10 });
+    expect(paginate(many, 1).rows).toHaveLength(10);
+    expect(paginate(many, 3)).toMatchObject({ page: 3, from: 21, to: 23 });
+    expect(paginate(many, 3).rows).toHaveLength(3);
+  });
+
+  it('clamps out-of-range pages', () => {
+    expect(paginate(many, 9).page).toBe(3);
+    expect(paginate(many, 0).page).toBe(1);
+    expect(paginate([], 2)).toMatchObject({ page: 1, pageCount: 1, from: 0, to: 0, rows: [] });
   });
 });
 

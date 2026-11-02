@@ -11,7 +11,8 @@ delete (window as unknown as Record<string, unknown>).ontouchstart;
  */
 function mountCoasterPage(currentValue = 0, onSave: (value: number) => boolean = () => true) {
   document.body.innerHTML = `
-    <h1>Zadra</h1><a href="/fr/parks/12/energylandia">Energylandia</a>
+    <a href="/fr/parks/12/energylandia" aria-label="Retour"><svg></svg></a>
+    <h1>Zadra</h1><p><a href="/fr/parks/12/energylandia">Energylandia</a></p>
     <div class="cc-panel cc-panel__body csrf-protection" data-controller="csrf-protection rating-actions">
       <div class="csrf-protection" data-controller="csrf-protection rating"
            data-csrf-protection-token-value="tok123"
