@@ -15,7 +15,7 @@ export const fr = {
     attente: 'File d’attente',
     gestion: 'Gestion par le parc',
   },
-  weights: ['Ignoré', 'Normal', 'Important', 'Essentiel'] as [string, string, string, string],
+  weights: ['Normal', 'Important', 'Essentiel'] as [string, string, string],
 
   // ---------- Star input ----------
   notApplicable: 'Ne s’applique pas',
@@ -66,36 +66,84 @@ export const fr = {
   errInvalidJson: 'Fichier JSON invalide.',
   exported: (n: number) => `${n} note${s(n)} exportée${s(n)}.`,
   imported: (n: number) => `${n} note${s(n)} importée${s(n)}.`,
-  confirmReplace: 'Remplacer toutes tes notes et tes critères par ceux du fichier ?',
-
-  // ---------- Options page ----------
-  optEyebrow: 'Extension pour Captain Coaster',
+  optEyebrow: 'Réglages de l’extension',
   optLede:
-    'Tes critères, tes poids, tes notes. Tout reste dans ce navigateur ; seule la moyenne arrondie part sur Captain Coaster, quand tu cliques sur « Envoyer ».',
-  optCriteriaTitle: 'Mes critères',
-  optResetCriteria: 'Rétablir les critères par défaut',
-  optCriteriaHelp:
-    'Le poids dit combien un critère compte dans la moyenne. Un critère désactivé ou « Ignoré » disparaît du panneau, mais tes notes passées sont gardées.',
-  optNewCriterionLabel: 'Nom du nouveau critère',
-  optNewCriterionPlaceholder: 'Nouveau critère, ex. Première chute',
+    'Choisis ce qui compte pour toi dans un coaster et note chaque critère. Calcule ta moyenne selon tes critères, et envoie simplement ta moyenne calculée.',
+  optNavLabel: 'Sections des réglages',
+  optNavCriteria: 'Critères',
+  optNavRatings: 'Notes',
+  optNavBackup: 'Sauvegarde',
+  optStatRatings: (n: number) => `note${s(n)} détaillée${s(n)}`,
+  optStatSynced: (_n: number) => 'à jour sur Captain Coaster',
+  optStatPending: (_n: number) => 'en attente d’envoi',
+  optStatCriteria: (n: number, total: number) => `critère${s(n)} actif${s(n)} sur ${total}`,
+  optCancel: 'Annuler',
+  optDelete: 'Supprimer',
+
+  optCriteriaTitle: 'Tes critères',
+  optCriteriaIntro:
+    'Choisis les critères qui comptent pour toi. Ajuste la pondération de chacun selon son importance.',
+  optCriteriaEmpty: 'Aucun critère pour l’instant. Ajoute-en un ci-dessous ou reviens aux critères par défaut.',
+  optResetCriteria: 'Critères par défaut',
+  optNewCriterionLabel: 'Ajouter un critère',
+  optNewCriterionPlaceholder: 'Ex. Première chute, Airtime, Inversions…',
   optAdd: 'Ajouter',
-  optRatingsTitle: 'Mes notes',
+  optConfirmResetTitle: 'Revenir aux critères par défaut ?',
+  optConfirmResetBody:
+    'Tes critères personnalisés seront retirés et les poids remis à Normal. Les notes déjà données restent stockées.',
+  optConfirmResetAction: 'Rétablir',
+  optConfirmDeleteCriterionTitle: (name: string) => `Supprimer « ${name} » ?`,
+  optConfirmDeleteCriterionBody:
+    'Les notes déjà données sur ce critère restent stockées, mais ne compteront plus dans tes moyennes.',
+
+  optRatingsTitle: 'Tes notes',
+  optRatingsIntro:
+    'Retrouve toutes tes notes et leur statut. N’oublie pas de les envoyer à Captain Coaster pour qu’elles soient prises en compte.',
   optSearchLabel: 'Rechercher un coaster',
   optSearchPlaceholder: 'Coaster ou parc…',
+  optSortLabel: 'Trier par',
+  optSortRecent: 'Les plus récentes',
+  optSortName: 'Nom (A → Z)',
+  optSortAverage: 'Meilleure moyenne',
   optColCoaster: 'Coaster',
-  optColAverage: 'Moyenne',
+  optColAverage: 'Ta moyenne',
   optColOnCaptain: 'Sur Captain Coaster',
-  optColModified: 'Modifiée',
+  optColModified: 'Modifiée le',
   optColActions: 'Actions',
+  optStatusSynced: 'À jour',
+  optStatusSyncedHint: 'Ta moyenne est celle enregistrée sur Captain Coaster.',
+  optStatusResend: 'À renvoyer',
+  optStatusResendHint: 'Ta moyenne a changé depuis le dernier envoi. Ouvre la page du coaster pour la renvoyer.',
+  optStatusUnsent: 'Pas envoyée',
+  optStatusUnsentHint: 'Cette moyenne n’a jamais été envoyée. Ouvre la page du coaster pour l’envoyer.',
+  optStatusNone: 'Sans moyenne',
+  optStatusNoneHint: 'Aucun critère actif n’est noté pour ce coaster.',
+  optRatingsEmptyTitle: 'Pas encore de note détaillée',
   optRatingsEmpty:
-    'Aucune note pour l’instant. Ouvre la page d’un coaster sur Captain Coaster : le panneau « Ta note détaillée » apparaît sous les étoiles.',
+    'Ouvre la page d’un coaster sur Captain Coaster : le panneau « Ta note détaillée » t’attend juste sous les étoiles.',
+  optConfirmDeleteRatingTitle: (name: string) => `Supprimer ta note de ${name} ?`,
+  optConfirmDeleteRatingBody:
+    'Seule ta note détaillée est effacée. La note enregistrée sur Captain Coaster ne change pas.',
+
   optBackupTitle: 'Sauvegarde',
-  optBackupHelp:
-    'Tes notes ne quittent pas ce navigateur. Exporte-les de temps en temps, ou pour les passer sur un autre ordinateur.',
-  optExport: 'Exporter (.json)',
-  optImport: 'Importer…',
-  optReplace: 'Remplacer au lieu de fusionner',
-  optFooter: 'Captain Note n’est pas affilié à Captain Coaster. Aucune donnée n’est collectée.',
+  optBackupIntro:
+    'Tes notes ne vivent que dans ce navigateur. Exporte-les de temps en temps pour ne rien perdre, ou pour les retrouver sur un autre ordinateur.',
+  optExport: 'Télécharger la sauvegarde',
+  optImportModeLegend: 'Que faire du contenu du fichier ?',
+  optModeMerge: 'Fusionner',
+  optModeMergeHelp: 'Ajoute les critères manquants et garde, pour chaque coaster, la note la plus récente.',
+  optModeReplace: 'Tout remplacer',
+  optModeReplaceHelp: 'Efface tes critères et tes notes actuels au profit de ceux du fichier.',
+  optImport: 'Choisir un fichier…',
+  optConfirmReplaceTitle: 'Tout remplacer ?',
+  optConfirmReplaceBody: (n: number) =>
+    `Tes critères et ${
+      n === 0 ? 'tes notes' : n === 1 ? 'ta note détaillée' : `tes ${n} notes détaillées`
+    } seront remplacés par le contenu du fichier. Exporte d’abord si tu veux en garder une copie.`,
+  optConfirmReplaceAction: 'Remplacer',
+  optFooter: 'Captain Note est un projet indépendant, sans lien avec Captain Coaster. Aucune donnée n’est collectée.',
+  optFooterMadeBy: 'Fait par',
+  optFooterSource: 'Code source',
   enableCriterion: (name: string) => `Activer ${name}`,
   criterionName: (position: number) => `Nom du critère ${position}`,
   weightOf: (name: string) => `Poids de ${name}`,
@@ -103,23 +151,15 @@ export const fr = {
   moveDown: (name: string) => `Descendre ${name}`,
   moved: (name: string, position: number, total: number) => `${name} déplacé en position ${position} sur ${total}.`,
   deleteCriterion: (name: string) => `Supprimer ${name}`,
-  confirmDeleteCriterion: (name: string) =>
-    `Supprimer le critère « ${name} » ? Les notes déjà données sur ce critère ne compteront plus.`,
   criterionDeleted: (name: string) => `Critère ${name} supprimé.`,
   criterionAdded: (name: string, position: number) => `Critère ${name} ajouté en position ${position}.`,
-  confirmReset: 'Revenir aux critères par défaut ? Tes critères personnalisés seront retirés (les notes restent stockées).',
   resetDone: 'Critères par défaut rétablis.',
   noMatch: (query: string) => `Aucun coaster ne correspond à « ${query} ».`,
   noMatchShort: 'Aucun coaster ne correspond.',
   shownCount: (n: number) => `${n} coaster${s(n)} affiché${s(n)}.`,
   newTab: ' (nouvel onglet)',
   noAverage: 'Aucune',
-  notSent: 'Pas envoyée',
-  toResend: 'à renvoyer',
-  toResendTitle: 'Ta moyenne a changé depuis le dernier envoi. Ouvre la page du coaster pour renvoyer.',
   deleteRating: (name: string) => `Supprimer la note de ${name}`,
-  confirmDeleteRating: (name: string) =>
-    `Supprimer ta note détaillée de ${name} ? La note sur Captain Coaster ne change pas.`,
   ratingDeleted: (name: string) => `Note de ${name} supprimée.`,
 };
 

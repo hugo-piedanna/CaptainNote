@@ -1,26 +1,30 @@
+import { Icon, type IconName } from './Icon';
+
 export function IconButton({
-  text,
+  icon,
   label,
   focusKey,
   disabled,
+  danger,
   onClick,
 }: {
-  text: string;
+  icon: IconName;
   label: string;
   focusKey: string;
   disabled?: boolean;
+  danger?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
-      className="icon"
+      className={'icon-btn' + (danger ? ' icon-btn--danger' : '')}
       title={label}
       aria-label={label}
       disabled={disabled}
       data-focus-key={focusKey}
       onClick={onClick}>
-      <span aria-hidden="true">{text}</span>
+      <Icon name={icon} />
     </button>
   );
 }

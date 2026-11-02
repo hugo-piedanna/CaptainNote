@@ -4,7 +4,7 @@ import { getLocale, messagesFor, type Locale } from './i18n';
 export interface Criterion {
   id: string;
   name: string;
-  /** 0 = ignored, 1 = normal, 2 = important, 3 = essential. */
+  /** 1 = normal, 2 = important, 3 = essential. Excluding a criterion is done with `enabled`. */
   weight: number;
   enabled: boolean;
 }
@@ -33,6 +33,16 @@ const DEFAULT_IDS = ['layout', 'confort', 'rejouabilite', 'theming', 'longueur',
 export function defaultCriteria(locale: Locale = getLocale()): Criterion[] {
   const names = messagesFor(locale).criteria;
   return DEFAULT_IDS.map((id) => ({ id, name: names[id], weight: 1, enabled: true }));
+}
+
+/**
+ * Clamps the weight to 1–3. The former Ignored weight (0), or any missing weight, becomes a disabled
+ * criterion with Normal weight (FR-criteria-weights).
+ */
+export function normalizeCriterion(criterion: Criterion): Criterion {
+  const weight = Math.round(Number(criterion.weight) || 0);
+  if (weight < 1) return { ...criterion, weight: 1, enabled: false };
+  return { ...criterion, weight: Math.min(3, weight) };
 }
 
 /** Snaps any number to a valid Captain Coaster value (0.5 to 5, half steps). */
@@ -87,6 +97,16 @@ export function computeAverage(criteria: Criterion[], scores: Record<string, Sco
 export function formatValue(value: number | null, digits = 1): string {
   if (value === null) return '–';
   return value.toLocaleString(getLocale(), { minimumFractionDigits: 0, maximumFractionDigits: digits });
+}
+
+/** Moves the criterion at `index` by `delta` positions; out-of-range moves return the list unchanged. */
+export function moveCriterion(criteria: Criterion[], index: number, delta: number): Criterion[] {
+  const target = index + delta;
+  if (index < 0 || index >= criteria.length || target < 0 || target >= criteria.length) return criteria;
+  const next = [...criteria];
+  const [moved] = next.splice(index, 1);
+  next.splice(target, 0, moved!);
+  return next;
 }
 
 export function newCriterionId(name: string, existing: Criterion[]): string {

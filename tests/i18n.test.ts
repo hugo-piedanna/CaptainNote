@@ -29,7 +29,7 @@ describe('messages', () => {
       for (const [key, value] of Object.entries(messages)) {
         if (typeof value === 'string') expect(value, `${locale}.${key}`).not.toBe('');
       }
-      expect(messages.weights).toHaveLength(4);
+      expect(messages.weights).toHaveLength(3);
       expect(Object.keys(messages.criteria).sort()).toEqual(Object.keys(messagesFor('fr').criteria).sort());
     }
   });

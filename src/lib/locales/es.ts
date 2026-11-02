@@ -13,7 +13,7 @@ export const es: Messages = {
     attente: 'Cola de espera',
     gestion: 'Gestión del parque',
   },
-  weights: ['Ignorado', 'Normal', 'Importante', 'Esencial'],
+  weights: ['Normal', 'Importante', 'Esencial'],
 
   // ---------- Star input ----------
   notApplicable: 'No aplica',
@@ -64,36 +64,84 @@ export const es: Messages = {
   errInvalidJson: 'Archivo JSON no válido.',
   exported: (n: number) => `${n} nota${s(n)} exportada${s(n)}.`,
   imported: (n: number) => `${n} nota${s(n)} importada${s(n)}.`,
-  confirmReplace: '¿Sustituir todas tus notas y criterios por los del archivo?',
-
-  // ---------- Options page ----------
-  optEyebrow: 'Extensión para Captain Coaster',
+  optEyebrow: 'Ajustes de la extensión',
   optLede:
-    'Tus criterios, tus pesos, tus notas. Todo se queda en este navegador; solo la media redondeada se envía a Captain Coaster, cuando haces clic en «Enviar».',
-  optCriteriaTitle: 'Mis criterios',
-  optResetCriteria: 'Restablecer los criterios por defecto',
-  optCriteriaHelp:
-    'El peso indica cuánto cuenta un criterio en la media. Un criterio desactivado o «Ignorado» desaparece del panel, pero tus notas anteriores se conservan.',
-  optNewCriterionLabel: 'Nombre del nuevo criterio',
-  optNewCriterionPlaceholder: 'Nuevo criterio, p. ej. Primera caída',
+    'Elige lo que te importa en una montaña rusa y puntúa cada criterio. Calcula tu media según tus criterios y envía simplemente tu media calculada.',
+  optNavLabel: 'Secciones de los ajustes',
+  optNavCriteria: 'Criterios',
+  optNavRatings: 'Notas',
+  optNavBackup: 'Copia de seguridad',
+  optStatRatings: (n: number) => `nota${s(n)} detallada${s(n)}`,
+  optStatSynced: (_n: number) => 'al día en Captain Coaster',
+  optStatPending: (n: number) => `pendiente${s(n)} de envío`,
+  optStatCriteria: (n: number, total: number) => `criterio${s(n)} activo${s(n)} de ${total}`,
+  optCancel: 'Cancelar',
+  optDelete: 'Eliminar',
+
+  optCriteriaTitle: 'Tus criterios',
+  optCriteriaIntro:
+    'Elige los criterios que te importan. Ajusta la ponderación de cada uno según su importancia.',
+  optCriteriaEmpty: 'Aún no hay criterios. Añade uno abajo o vuelve a los criterios por defecto.',
+  optResetCriteria: 'Criterios por defecto',
+  optNewCriterionLabel: 'Añadir un criterio',
+  optNewCriterionPlaceholder: 'P. ej. Primera caída, Airtime, Inversiones…',
   optAdd: 'Añadir',
-  optRatingsTitle: 'Mis notas',
+  optConfirmResetTitle: '¿Volver a los criterios por defecto?',
+  optConfirmResetBody:
+    'Se quitarán tus criterios personalizados y los pesos volverán a Normal. Las notas ya dadas se conservan.',
+  optConfirmResetAction: 'Restablecer',
+  optConfirmDeleteCriterionTitle: (name: string) => `¿Eliminar «${name}»?`,
+  optConfirmDeleteCriterionBody:
+    'Las notas ya dadas en este criterio se conservan, pero dejarán de contar en tus medias.',
+
+  optRatingsTitle: 'Tus notas',
+  optRatingsIntro:
+    'Encuentra todas tus notas y su estado. No olvides enviarlas a Captain Coaster para que se tengan en cuenta.',
   optSearchLabel: 'Buscar una montaña rusa',
   optSearchPlaceholder: 'Montaña rusa o parque…',
+  optSortLabel: 'Ordenar por',
+  optSortRecent: 'Más recientes',
+  optSortName: 'Nombre (A → Z)',
+  optSortAverage: 'Mejor media',
   optColCoaster: 'Montaña rusa',
-  optColAverage: 'Media',
+  optColAverage: 'Tu media',
   optColOnCaptain: 'En Captain Coaster',
   optColModified: 'Modificada',
   optColActions: 'Acciones',
+  optStatusSynced: 'Al día',
+  optStatusSyncedHint: 'Tu media coincide con la nota guardada en Captain Coaster.',
+  optStatusResend: 'Por reenviar',
+  optStatusResendHint:
+    'Tu media ha cambiado desde el último envío. Abre la página de la montaña rusa para reenviarla.',
+  optStatusUnsent: 'No enviada',
+  optStatusUnsentHint: 'Esta media nunca se ha enviado. Abre la página de la montaña rusa para enviarla.',
+  optStatusNone: 'Sin media',
+  optStatusNoneHint: 'Ningún criterio activo está puntuado para esta montaña rusa.',
+  optRatingsEmptyTitle: 'Aún no hay notas detalladas',
   optRatingsEmpty:
-    'Todavía no hay notas. Abre la página de una montaña rusa en Captain Coaster: el panel «Tu nota detallada» aparece bajo las estrellas.',
+    'Abre la página de una montaña rusa en Captain Coaster: el panel «Tu nota detallada» te espera justo debajo de las estrellas.',
+  optConfirmDeleteRatingTitle: (name: string) => `¿Eliminar tu nota de ${name}?`,
+  optConfirmDeleteRatingBody: 'Solo se borra tu nota detallada. La nota guardada en Captain Coaster no cambia.',
+
   optBackupTitle: 'Copia de seguridad',
-  optBackupHelp:
-    'Tus notas no salen de este navegador. Expórtalas de vez en cuando, o para pasarlas a otro ordenador.',
-  optExport: 'Exportar (.json)',
-  optImport: 'Importar…',
-  optReplace: 'Sustituir en lugar de combinar',
-  optFooter: 'Captain Note no está afiliado a Captain Coaster. No se recoge ningún dato.',
+  optBackupIntro:
+    'Tus notas solo viven en este navegador. Expórtalas de vez en cuando para no perder nada, o para pasarlas a otro ordenador.',
+  optExport: 'Descargar la copia',
+  optImportModeLegend: '¿Qué hacer con el contenido del archivo?',
+  optModeMerge: 'Combinar',
+  optModeMergeHelp: 'Añade los criterios que faltan y conserva, para cada montaña rusa, la nota más reciente.',
+  optModeReplace: 'Sustituirlo todo',
+  optModeReplaceHelp: 'Borra tus criterios y notas actuales y los sustituye por los del archivo.',
+  optImport: 'Elegir un archivo…',
+  optConfirmReplaceTitle: '¿Sustituirlo todo?',
+  optConfirmReplaceBody: (n: number) =>
+    `Tus criterios y ${
+      n === 0 ? 'tus notas' : n === 1 ? 'tu nota detallada' : `tus ${n} notas detalladas`
+    } se sustituirán por el contenido del archivo. Exporta antes si quieres conservar una copia.`,
+  optConfirmReplaceAction: 'Sustituir',
+  optFooter: 'Captain Note es un proyecto independiente, sin relación con Captain Coaster. No se recoge ningún dato.',
+  optFooterMadeBy: 'Hecho por',
+  optFooterSource: 'Código fuente',
   enableCriterion: (name: string) => `Activar ${name}`,
   criterionName: (position: number) => `Nombre del criterio ${position}`,
   weightOf: (name: string) => `Peso de ${name}`,
@@ -101,23 +149,14 @@ export const es: Messages = {
   moveDown: (name: string) => `Bajar ${name}`,
   moved: (name: string, position: number, total: number) => `${name} movido a la posición ${position} de ${total}.`,
   deleteCriterion: (name: string) => `Eliminar ${name}`,
-  confirmDeleteCriterion: (name: string) =>
-    `¿Eliminar el criterio «${name}»? Las notas ya dadas en este criterio dejarán de contar.`,
   criterionDeleted: (name: string) => `Criterio ${name} eliminado.`,
   criterionAdded: (name: string, position: number) => `Criterio ${name} añadido en la posición ${position}.`,
-  confirmReset:
-    '¿Volver a los criterios por defecto? Tus criterios personalizados se eliminarán (las notas siguen guardadas).',
   resetDone: 'Criterios por defecto restablecidos.',
   noMatch: (query: string) => `Ninguna montaña rusa coincide con «${query}».`,
   noMatchShort: 'Ninguna montaña rusa coincide.',
   shownCount: (n: number) => `${n} montaña${s(n)} rusa${s(n)} mostrada${s(n)}.`,
   newTab: ' (pestaña nueva)',
   noAverage: 'Ninguna',
-  notSent: 'No enviada',
-  toResend: 'por reenviar',
-  toResendTitle: 'Tu media ha cambiado desde el último envío. Abre la página de la montaña rusa para reenviarla.',
   deleteRating: (name: string) => `Eliminar la nota de ${name}`,
-  confirmDeleteRating: (name: string) =>
-    `¿Eliminar tu nota detallada de ${name}? La nota en Captain Coaster no cambia.`,
   ratingDeleted: (name: string) => `Nota de ${name} eliminada.`,
 };

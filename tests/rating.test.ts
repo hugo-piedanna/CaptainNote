@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { computeAverage, defaultCriteria, newCriterionId, toCaptainValue, type Criterion } from '@/lib/rating';
+import {
+  computeAverage,
+  defaultCriteria,
+  newCriterionId,
+  normalizeCriterion,
+  toCaptainValue,
+  type Criterion,
+} from '@/lib/rating';
 
 const crit = (id: string, weight = 1, enabled = true): Criterion => ({ id, name: id, weight, enabled });
 
@@ -33,6 +40,19 @@ describe('computeAverage', () => {
 
   it('rejects invalid stored scores', () => {
     expect(computeAverage([crit('a'), crit('b')], { a: 4, b: 3.3 }).raw).toBe(4);
+  });
+});
+
+describe('normalizeCriterion', () => {
+  it('turns the former Ignored weight into a disabled Normal criterion', () => {
+    expect(normalizeCriterion(crit('a', 0))).toEqual(crit('a', 1, false));
+    expect(normalizeCriterion({ ...crit('a'), weight: undefined as unknown as number })).toEqual(crit('a', 1, false));
+  });
+
+  it('keeps valid weights and clamps above 3', () => {
+    expect(normalizeCriterion(crit('a', 2))).toEqual(crit('a', 2));
+    expect(normalizeCriterion(crit('a', 2, false))).toEqual(crit('a', 2, false));
+    expect(normalizeCriterion(crit('a', 7))).toEqual(crit('a', 3));
   });
 });
 

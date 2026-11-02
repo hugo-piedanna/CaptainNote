@@ -3,6 +3,7 @@ import { getLocale, t, type Locale } from './i18n';
 import {
   defaultCriteria,
   isValidScore,
+  normalizeCriterion,
   type CoasterRating,
   type Criterion,
   type Score,
@@ -13,7 +14,7 @@ import {
 export const criteriaItem = storage.defineItem<Criterion[]>('local:criteria');
 
 export async function getCriteria(): Promise<Criterion[]> {
-  return (await criteriaItem.getValue()) ?? defaultCriteria();
+  return (await criteriaItem.getValue())?.map(normalizeCriterion) ?? defaultCriteria();
 }
 
 /** Last Captain Coaster locale seen on a coaster page, used by the options page. */
@@ -73,12 +74,14 @@ export function parseBackup(json: unknown): Backup {
 
   const criteria: Criterion[] = data.criteria
     .filter((c): c is Criterion => typeof c?.id === 'string' && typeof c?.name === 'string')
-    .map((c) => ({
-      id: c.id.slice(0, 64),
-      name: c.name.slice(0, 60),
-      weight: Math.min(3, Math.max(0, Math.round(Number(c.weight) || 0))),
-      enabled: c.enabled !== false,
-    }));
+    .map((c) =>
+      normalizeCriterion({
+        id: c.id.slice(0, 64),
+        name: c.name.slice(0, 60),
+        weight: c.weight,
+        enabled: c.enabled !== false,
+      }),
+    );
 
   const ratings: Record<string, CoasterRating> = {};
   for (const r of Object.values(data.ratings as Record<string, CoasterRating>)) {

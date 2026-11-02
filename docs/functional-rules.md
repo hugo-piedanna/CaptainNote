@@ -28,11 +28,13 @@ Default criteria MUST be, in this order of relevance (French names; translated p
 
 ## FR-criteria-customization
 
-For each criterion, the user MUST be able to rename, enable/disable, and choose a weight among Ignoré, Normal, Important, Essentiel.
+For each criterion, the user MUST be able to rename, enable/disable, and choose a weight among Normal, Important, Essentiel. The enable/disable switch is the only way to exclude a criterion from scoring.
 
 ## FR-criteria-weights
 
-Weights MUST behave in scoring as follows: Ignoré (weight 0) excluded; Normal ×1; Important ×2; Essentiel ×3. A disabled criterion MUST be ignored in scoring even if scores remain in storage.
+Weights MUST behave in scoring as follows: Normal ×1; Important ×2; Essentiel ×3. A disabled criterion MUST be ignored in scoring even if scores remain in storage.
+
+A criterion stored or imported with the former Ignoré weight (0), or with a missing or invalid weight below 1, MUST be loaded as disabled with Normal weight. Weights above 3 MUST be clamped to 3.
 
 ## FR-rating-score-input
 
@@ -99,3 +101,43 @@ Supersedes `FR-ui-locale-fr`. User-visible extension strings (panel, options pag
 - Language detection MUST NOT add any permission or network request (`FR-privacy-*`).
 - The locale used in Captain Coaster URLs for submission (`FR-captain-integration-dual-path`) stays the one read from the current page.
 - Adding a language requires updating this list and providing a complete translation.
+
+## FR-options-layout
+
+The settings page (`FR-ui-settings-entry`) MUST be a single scrolling page with three sections, in this order: Criteria, Ratings, Backup. A navigation bar MUST stay visible while scrolling and link to each section.
+
+- Destructive actions (delete a criterion, delete a detailed rating, restore default criteria, import in Replace mode) MUST ask for confirmation in an in-page dialog in the display language (`FR-ui-locale-multi`). The dialog MUST be keyboard accessible, MUST focus the cancel button first, and MUST treat Escape as cancel.
+- Renaming a criterion MUST be saved on blur or Enter; Escape MUST restore the previous name. An empty name MUST NOT be saved.
+- The weight (`FR-criteria-customization`) MUST be chosen with one control showing the three levels and their multiplier.
+- Import (`FR-backup-merge-replace`) MUST show the two modes as an explicit choice with a description of each, Merge selected by default.
+
+## FR-options-summary
+
+The top of the settings page MUST show a summary computed locally from storage, with no network request: the number of detailed ratings, how many are up to date on Captain Coaster, how many wait to be sent, and the number of active criteria out of the total.
+
+Each detailed rating MUST have one status, based on its current average (`FR-rating-weighted-average`) and its last sent value:
+
+- **Up to date**: the average equals the last sent value.
+- **To resend**: a value was sent, and the average now differs from it.
+- **Not sent**: there is an average, and nothing was ever sent.
+- **No average**: no active criterion is scored. Nothing waits to be sent.
+
+“Waiting to be sent” counts the To resend and Not sent statuses. The ratings list MUST show the status of each rating.
+
+## FR-options-ratings-sort
+
+The ratings list MUST be filterable by coaster or park name (case-insensitive substring) and sortable by:
+
+- **Most recent** (default): last modification date, newest first.
+- **Name**: coaster name A→Z, compared for the display language.
+- **Average**: highest average first; ratings with no average last.
+
+The chosen sort applies to the current page view only and MUST NOT be persisted.
+
+## FR-options-author-footer
+
+The settings page footer (`FR-options-layout`) MUST include the mention “Made by Hugo Piedanna” with two links: the author’s website (`https://piedanna.dev`) and the source code repository (`https://github.com/hugo-piedanna/CaptainNote`). Texts MUST follow `FR-ui-locale-multi`.
+
+- The mention MUST appear only on the settings page, never in the panel injected into Captain Coaster pages.
+- Links MUST be plain links opening in a new tab (`target="_blank"`, `rel="noopener noreferrer"`). No URL parameter MUST carry user data.
+- No image, font, script, or widget from these sites MUST be loaded: nothing leaves the browser until the user clicks a link (`FR-privacy-network-send`). No permission is added (`FR-privacy-permissions`).

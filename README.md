@@ -17,16 +17,17 @@ Captain Note adds a detailed rating panel to every coaster page on Captain Coast
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Author](#author)
 - [Development](#development)
 - [Privacy](#privacy)
 
 ## Features
 
 - Detailed rating panel below the stars on every coaster page
-- Customizable criteria: name, on/off and weight (Ignored, Normal, Important, Essential)
+- Customizable criteria: name, on/off and weight (Normal, Important, Essential)
 - Half-star input, keyboard accessible; a criterion can be left empty when it does not apply
 - One-click submission of the final rating to Captain Coaster
-- List of all detailed ratings on the settings page
+- Settings page with a summary of your ratings, sortable and searchable list, and a status per coaster (up to date, to resend, not sent)
 - JSON export and import (merge or replace)
 - Fully local, no server
 - Available in English, French, Spanish and German, following the Captain Coaster language
@@ -61,7 +62,13 @@ npm install
 2. Rate each criterion in the "Your detailed rating" panel.
 3. Click "Send" to save the final rating on Captain Coaster.
 
-Criteria, weights and the list of ratings are managed from the settings page, opened with the extension's toolbar button.
+Criteria, weights and the list of ratings are managed from the settings page, opened with the extension's toolbar button. It is one page with three sections, reachable from a navigation bar that stays visible:
+
+- **Criteria**: rename, reorder, enable or disable each criterion, and pick its weight (Normal ×1, Important ×2, Essential ×3). Disabling a criterion removes it from the average.
+- **Ratings**: every detailed rating with its current average and its status on Captain Coaster. Search by coaster or park, sort by most recent, name or highest average.
+- **Backup**: export a JSON file, or import one by merging it with your data or replacing everything.
+
+The summary at the top counts your detailed ratings, those up to date on Captain Coaster, those waiting to be sent, and your active criteria. Deleting or replacing data always asks for confirmation first.
 
 ### Languages
 
@@ -80,7 +87,7 @@ Layout and pacing, Comfort and smoothness, Rerideability, Theming, Ride length, 
 
 ### How the rating is computed
 
-The final rating is the average of the rated criteria, weighted by their weight (Normal ×1, Important ×2, Essential ×3, Ignored excluded), rounded down to the nearest half point and clamped between 0.5 and 5.
+The final rating is the average of the rated criteria, weighted by their weight (Normal ×1, Important ×2, Essential ×3; disabled criteria excluded), rounded down to the nearest half point and clamped between 0.5 and 5.
 
 | Criterion              | Score | Weight         |
 | ---------------------- | ----- | -------------- |
@@ -89,6 +96,10 @@ The final rating is the average of the rated criteria, weighted by their weight 
 | Comfort and smoothness | 3     | Normal (×1)    |
 
 (5×3 + 4.5×2 + 3×1) / 6 = **4.5**
+
+## Author
+
+Made by [Hugo Piedanna](https://piedanna.dev). Source code: [github.com/hugo-piedanna/CaptainNote](https://github.com/hugo-piedanna/CaptainNote).
 
 ## Development
 
@@ -119,7 +130,8 @@ Application source lives under [`src/`](src/) (`srcDir` in WXT). Tests stay in [
 | [`src/components/stars/StarInput.tsx`](src/components/stars/StarInput.tsx) | Half-star input (React), keyboard accessible.                                          |
 | [`src/components/panel/CoasterPanel.tsx`](src/components/panel/CoasterPanel.tsx) | Detailed rating panel UI.                                                            |
 | [`src/entrypoints/captain.content.tsx`](src/entrypoints/captain.content.tsx) | Mounts the panel on coaster pages (shadow root).                                     |
-| [`src/entrypoints/options/`](src/entrypoints/options/)                     | Settings page: criteria, list of ratings, backup.                                        |
+| [`src/entrypoints/options/`](src/entrypoints/options/)                     | Settings page: `sections/` (criteria, ratings, backup), `hooks/` (one per data domain), `components/`, `services.tsx` (live region and confirmation dialog). |
+| [`src/lib/ratingsOverview.ts`](src/lib/ratingsOverview.ts)                 | Rating status, summary, sort and search of the settings list. No browser APIs.           |
 | [`src/entrypoints/background.ts`](src/entrypoints/background.ts)           | Opens the settings from the toolbar button.                                              |
 
 ### Captain Coaster integration
