@@ -20,6 +20,7 @@ Captain Note adds a detailed rating panel to every coaster page on Captain Coast
 - [Author](#author)
 - [Development](#development)
 - [Privacy](#privacy)
+- [License](#license)
 
 ## Features
 
@@ -146,6 +147,10 @@ The site accepts values from 0.5 to 5 in steps of 0.5.
 ## Privacy
 
 Data stays in the browser: no server, no analytics, no data collection. Only the final rating is sent to the Captain Coaster account, when "Send" is clicked. See [PRIVACY.md](PRIVACY.md).
+
+## License
+
+[MIT](LICENSE) © 2026 Hugo Piedanna
 
 ---
 
